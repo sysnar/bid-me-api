@@ -6,5 +6,6 @@ import { ScrapperService } from "./scrapper.service";
 @Module({
   controllers: [ScrapperController],
   providers: [ScrapperService, Frontier],
+  exports: [Frontier],
 })
 export class ScrapperModule {}
