@@ -38,38 +38,45 @@ export class Frontier {
   // 현재일을 기준으로 앞 6개월, 뒷 6개월의 데이터를 수집
   // scrapp data : +6 M ~ today ~ -6 M
   async main(init: string, option = { headless: true }) {
-    const browserOption = option;
-    const broswer = await puppeteer.launch(browserOption);
-    const page = await broswer.newPage();
-    const response = await page.goto(init);
-    const dates = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
+    try {
+      const browserOption = option;
+      const browser = await puppeteer.launch(browserOption);
+      const dates = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
 
-    page.setViewport({
-      width: 1024,
-      height: 768,
-    });
+      // Listender to control new _blank window popup
+      browser.on('targetcreated', async (target) => {
+        if (target.type() !== 'page') return;
 
-    page.on('dialog', async (dialog) => {
-      console.log('LOG: Dialog poped', dialog);
-      await dialog.dismiss();
-    });
+        const properOrigin = 'http://www.g2b.go.kr';
+        const pageUrl = target.url();
+        // if (new URL(pageUrl).origin === properOrigin) return;
 
-    // page.$eval(
-    //   '#instNm',
-    //   (element: Element) => {
-    //     element.value = '2021/08/10';
-    //     return element.value;
-    //   },
-    //   dates,
-    // );
-    await page.evaluate(() => {
-      let element = <HTMLInputElement>document.getElementById('#instNm');
-      element.value = '1234';
-    });
-    await page.screenshot({ path: 'screenshot.png' });
-    // fs.writeFileSync("result.txt", result);
+        console.log(`Closing page ... ${pageUrl}...`);
+        const newPage = await target.page();
+        await newPage.close();
+        console.log(`Page ... ${pageUrl} closed.`);
+      });
 
-    await page.close();
-    await broswer.close();
+      const [mainPage] = await browser.pages();
+
+      const response = await mainPage.goto(init);
+
+      mainPage.on('dialog', async (dialog) => {
+        console.log('LOG: Dialog poped', dialog);
+        await dialog.dismiss();
+      });
+
+      await mainPage.evaluate(() => {
+        let element = <HTMLInputElement>document.getElementById('fromBidDt');
+        console.log(element);
+        element.value = '1234';
+      });
+      await mainPage.screenshot({ path: 'screenshot.png' });
+
+      await mainPage.close();
+      await browser.close();
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
