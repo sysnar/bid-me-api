@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs';
 
@@ -25,6 +25,7 @@ export class DateCalculator {
 
 @Injectable()
 export class Frontier {
+  private readonly logger = new Logger(Frontier.name);
   private today: Date;
   private endOfDate: Date;
   private startOfDate: Date;
@@ -39,22 +40,18 @@ export class Frontier {
   // scrapp data : +6 M ~ today ~ -6 M
   async main(init: string, option = { headless: true }) {
     try {
+      const dates = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
       const browserOption = option;
       const browser = await puppeteer.launch(browserOption);
-      const dates = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
 
       // Listender to control new _blank window popup
       browser.on('targetcreated', async (target) => {
         if (target.type() !== 'page') return;
 
-        const properOrigin = 'http://www.g2b.go.kr';
         const pageUrl = target.url();
-        // if (new URL(pageUrl).origin === properOrigin) return;
 
-        console.log(`Closing page ... ${pageUrl}...`);
         const newPage = await target.page();
         await newPage.close();
-        console.log(`Page ... ${pageUrl} closed.`);
       });
 
       const [mainPage] = await browser.pages();
@@ -62,21 +59,24 @@ export class Frontier {
       const response = await mainPage.goto(init);
 
       mainPage.on('dialog', async (dialog) => {
-        console.log('LOG: Dialog poped', dialog);
         await dialog.dismiss();
       });
 
-      await mainPage.evaluate(() => {
-        let element = <HTMLInputElement>document.getElementById('fromBidDt');
-        console.log(element);
-        element.value = '1234';
-      });
+      await mainPage.evaluate((dates) => {
+        let startDate = <HTMLInputElement>document.getElementById('fromBidDt');
+        startDate.value = dates[0];
+        let endDate = <HTMLInputElement>document.getElementById('toBidDt');
+        endDate.value = dates[1];
+      }, dates);
+
+      await Promise.all([mainPage.click('.btn_dark'), mainPage.waitForNavigation({ waitUntil: 'networkidle2' })]);
+
       await mainPage.screenshot({ path: 'screenshot.png' });
 
       await mainPage.close();
       await browser.close();
     } catch (error) {
-      console.log(error);
+      this.logger.error(`Frontier main Error : ${error}`);
     }
   }
 }
