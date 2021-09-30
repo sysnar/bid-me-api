@@ -69,9 +69,12 @@ export class Frontier {
         endDate.value = dates[1];
       }, dates);
 
-      await Promise.all([mainPage.click('.btn_dark'), mainPage.waitForNavigation({ waitUntil: 'networkidle2' })]);
+      await Promise.all([mainPage.click('.btn_dark'), mainPage.waitForNavigation({ waitUntil: 'networkidle0' })]);
+      const frames = await mainPage.frames().find((frame) => frame.name() === 'main');
 
-      await mainPage.screenshot({ path: 'screenshot.png' });
+      let elementHandles = await frames.$$('.tl > div > a');
+      const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
+      const hrefs = await Promise.all(propertyJsHandles.map((handle) => handle.jsonValue()));
 
       await mainPage.close();
       await browser.close();
