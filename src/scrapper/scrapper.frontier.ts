@@ -24,16 +24,48 @@ export class DateCalculator {
 }
 
 @Injectable()
+export class FsExplorer {
+  private readonly logger = new Logger(FsExplorer.name);
+  constructor() {}
+
+  checkDir(path: string) {
+    if (!fs.existsSync(path)) {
+      this.logger.log(`Result directory doesn't exits`);
+      this.logger.log(`Creating directory results...`);
+      fs.mkdirSync(path);
+    }
+  }
+
+  checkFile(path: string, files: string[]) {
+    files.forEach((file) => {
+      let fullPath = `${path}/${file}`;
+      if (!fs.existsSync(fullPath)) {
+        fs.writeFileSync(fullPath, '');
+      }
+    });
+  }
+
+  writeFile(path: string, file: string, links: string[]) {
+    let fullPath = `${path}/${file}`;
+    for (let link of links) {
+      fs.appendFileSync(fullPath, link + '\n');
+    }
+  }
+}
+
+@Injectable()
 export class Frontier {
   private readonly logger = new Logger(Frontier.name);
   private today: Date;
   private endOfDate: Date;
   private startOfDate: Date;
+  private _path: string;
 
-  constructor(private dateCalculater: DateCalculator) {
+  constructor(private dateCalculater: DateCalculator, private fsExplorer: FsExplorer) {
     this.today = this.dateCalculater.getTodayStr();
     this.endOfDate = this.dateCalculater.add6Month(this.today);
     this.startOfDate = this.dateCalculater.sub6Month(this.today);
+    this._path = 'results';
   }
 
   // 현재일을 기준으로 앞 6개월, 뒷 6개월의 데이터를 수집
@@ -74,7 +106,12 @@ export class Frontier {
 
       let elementHandles = await frames.$$('.tl > div > a');
       const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
-      const hrefs = await Promise.all(propertyJsHandles.map((handle) => handle.jsonValue()));
+      const hrefs = await Promise.all<string>(propertyJsHandles.map((handle) => handle.jsonValue()));
+
+      await this.fsExplorer.checkDir(this._path);
+      await this.fsExplorer.checkFile(this._path, ['queue.txt', 'crawled.txt']);
+
+      this.fsExplorer.writeFile(this._path, 'queue.txt', hrefs);
 
       await mainPage.close();
       await browser.close();
