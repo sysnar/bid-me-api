@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { FsExplorer } from './fsExplorer.model';
 import { ScrapperController } from './scrapper.controller';
-import { Frontier, FsExplorer } from './scrapper.frontier';
+import { Frontier } from './scrapper.frontier';
 import { ScrapperService } from './scrapper.service';
 
 @Module({

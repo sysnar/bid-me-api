@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 import * as fs from 'fs';
+import { FsExplorer } from './fsExplorer.model';
 
 @Injectable()
 export class DateCalculator {
@@ -20,36 +21,6 @@ export class DateCalculator {
     return dates.map<string>((date: Date): string => {
       return date.getFullYear() + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getDate();
     });
-  }
-}
-
-@Injectable()
-export class FsExplorer {
-  private readonly logger = new Logger(FsExplorer.name);
-  constructor() {}
-
-  checkDir(path: string) {
-    if (!fs.existsSync(path)) {
-      this.logger.log(`Result directory doesn't exits`);
-      this.logger.log(`Creating directory results...`);
-      fs.mkdirSync(path);
-    }
-  }
-
-  checkFile(path: string, files: string[]) {
-    files.forEach((file) => {
-      let fullPath = `${path}/${file}`;
-      if (!fs.existsSync(fullPath)) {
-        fs.writeFileSync(fullPath, '');
-      }
-    });
-  }
-
-  writeFile(path: string, file: string, links: string[]) {
-    let fullPath = `${path}/${file}`;
-    for (let link of links) {
-      fs.appendFileSync(fullPath, link + '\n');
-    }
   }
 }
 
