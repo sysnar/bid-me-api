@@ -32,6 +32,6 @@ export class FsExplorer {
 
   fileToArray(path: string, file: string) {
     let fullPath = `${path}/${file}`;
-    return fs.readFileSync(fullPath, 'utf8');
+    return fs.readFileSync(fullPath, 'utf8').split('\n').filter(Boolean);
   }
 }
