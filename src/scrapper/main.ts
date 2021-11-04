@@ -1,6 +1,7 @@
+import { DateCalculator } from 'src/libs/date-calculator';
 import { FsExplorer } from './fsExplorer.model';
 import { Agent } from './scrapper.agent';
-import { DateCalculator, Frontier } from './scrapper.frontier';
+import { Frontier } from './scrapper.frontier';
 
 const dCalculater = new DateCalculator();
 const fsExplorer = new FsExplorer();

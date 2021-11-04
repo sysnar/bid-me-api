@@ -25,12 +25,16 @@ export class FsExplorer {
 
   writeFile(path: string, file: string, links: string[]) {
     let fullPath = `${path}/${file}`;
+    this.checkDir(path);
+    this.checkFile(path, [file]);
     for (let link of links) {
       fs.appendFileSync(fullPath, link + '\n');
     }
   }
 
   fileToArray(path: string, file: string) {
+    this.checkDir(path);
+    this.checkFile(path, [file]);
     let fullPath = `${path}/${file}`;
     return fs.readFileSync(fullPath, 'utf8').split('\n').filter(Boolean);
   }
