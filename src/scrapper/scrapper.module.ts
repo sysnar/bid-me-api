@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DateCalculator } from 'src/libs/date-calculator';
+import { DateCalculator } from '../libs/date-calculator';
 import { FsExplorer } from './fsExplorer.model';
 import { ScrapperController } from './scrapper.controller';
 import { Frontier } from './scrapper.frontier';

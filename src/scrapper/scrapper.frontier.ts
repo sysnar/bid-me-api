@@ -14,8 +14,10 @@ export class Frontier {
 
   constructor(private dateCalculater: DateCalculator, private fsExplorer: FsExplorer) {
     this.today = this.dateCalculater.getTodayStr();
-    this.endOfDate = this.dateCalculater.add6Month(this.today);
-    this.startOfDate = this.dateCalculater.sub6Month(this.today);
+    // this.endOfDate = this.dateCalculater.add6Month(this.today);
+    // this.startOfDate = this.dateCalculater.sub6Month(this.today);
+    this.startOfDate = new Date('2021-01-01');
+    this.endOfDate = new Date('2021-05-31');
     this._path = 'results';
   }
 
@@ -23,7 +25,8 @@ export class Frontier {
   // scrapp data : +6 M ~ today ~ -6 M
   async main(init: string, option = { headless: true }) {
     try {
-      const dates = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
+      const [scrapStartDate, scrapEndDate] = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
+      this.logger.log(`Start Scrapping Nara from ${scrapStartDate} to ${scrapStartDate}`);
       const browserOption = option;
       const browser = await puppeteer.launch(browserOption);
 
@@ -38,31 +41,40 @@ export class Frontier {
       });
 
       const [mainPage] = await browser.pages();
-
-      const response = await mainPage.goto(init);
+      await mainPage.goto(init);
+      await mainPage.waitForNavigation({ waitUntil: 'networkidle0' });
 
       mainPage.on('dialog', async (dialog) => {
         await dialog.dismiss();
       });
 
-      await mainPage.evaluate((dates) => {
-        let startDate = <HTMLInputElement>document.getElementById('fromBidDt');
-        startDate.value = dates[0];
-        let endDate = <HTMLInputElement>document.getElementById('toBidDt');
-        endDate.value = dates[1];
-      }, dates);
+      await mainPage.evaluate(
+        (dates) => {
+          let startDate = <HTMLInputElement>document.getElementById('fromBidDt');
+          startDate.value = dates[0];
+          let endDate = <HTMLInputElement>document.getElementById('toBidDt');
+          endDate.value = dates[1];
+        },
+        [scrapStartDate, scrapEndDate],
+      );
 
       await Promise.all([mainPage.click('.btn_dark'), mainPage.waitForNavigation({ waitUntil: 'networkidle0' })]);
       const frames = await mainPage.frames().find((frame) => frame.name() === 'main');
 
-      let elementHandles = await frames.$$('.tl > div > a');
-      const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
-      const hrefs = await Promise.all<string>(propertyJsHandles.map((handle) => handle.jsonValue()));
+      while (true) {
+        let elementHandles = await frames.$$('.tl > div > a');
+        const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
+        const hrefs = await Promise.all<string>(propertyJsHandles.map((handle) => handle.jsonValue()));
 
-      await this.fsExplorer.checkDir(this._path);
-      await this.fsExplorer.checkFile(this._path, ['queue.txt', 'crawled.txt']);
+        if (hrefs == null) break;
 
-      this.fsExplorer.writeFile(this._path, 'queue.txt', hrefs);
+        this.fsExplorer.checkDir(this._path);
+        this.fsExplorer.checkFile(this._path, ['queue.txt', 'crawled.txt']);
+
+        this.fsExplorer.writeFile(this._path, 'queue.txt', hrefs);
+
+        await Promise.all([frames.click('a.default'), frames.waitForNavigation({ waitUntil: 'networkidle0' })]);
+      }
 
       await mainPage.close();
       await browser.close();

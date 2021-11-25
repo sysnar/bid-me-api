@@ -1,4 +1,4 @@
-import { DateCalculator } from 'src/libs/date-calculator';
+import { DateCalculator } from '../libs/date-calculator';
 import { FsExplorer } from './fsExplorer.model';
 import { Agent } from './scrapper.agent';
 import { Frontier } from './scrapper.frontier';
@@ -9,8 +9,7 @@ const frontier = new Frontier(dCalculater, fsExplorer);
 const agent = new Agent(fsExplorer);
 
 const naraURL = `http://www.g2b.go.kr/index.jsp`;
-// const naraURL = `http://c-up.io`;
-// frontier.main(naraURL, { headless: true });
+frontier.main(naraURL, { headless: false });
 
 const _path = 'results';
 const _filename = 'queue.txt';
