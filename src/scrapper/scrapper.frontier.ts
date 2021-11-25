@@ -62,16 +62,22 @@ export class Frontier {
       const frames = await mainPage.frames().find((frame) => frame.name() === 'main');
 
       while (true) {
-        let elementHandles = await frames.$$('.tl > div > a');
-        const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
-        const hrefs = await Promise.all<string>(propertyJsHandles.map((handle) => handle.jsonValue()));
+        const elementHandles: puppeteer.ElementHandle<Element>[] = await frames.$$('.tl > div > a');
+        const propertyJsHandles = await Promise.all(
+          elementHandles.map(async (handle): Promise<string> => {
+            const href = await handle.getProperty('href').then((handle) => handle.jsonValue());
+            const title = await handle.getProperty('innerText').then((handle) => handle.jsonValue());
+            return title + ',' + href;
+          }),
+        );
+        // const propertyJsHandles = await Promise.all(elementHandles.map((handle) => handle.getProperty('href')));
+        // const hrefs = await Promise.all<string>(propertyJsHandles.map((handle) => handle.jsonValue()));
 
-        if (hrefs == null) break;
+        if (propertyJsHandles == null) break;
 
         this.fsExplorer.checkDir(this._path);
         this.fsExplorer.checkFile(this._path, ['queue.txt', 'crawled.txt']);
-
-        this.fsExplorer.writeFile(this._path, 'queue.txt', hrefs);
+        this.fsExplorer.writeFile(this._path, 'queue.txt', propertyJsHandles);
 
         await Promise.all([frames.click('a.default'), frames.waitForNavigation({ waitUntil: 'networkidle0' })]);
       }
