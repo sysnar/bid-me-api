@@ -27,18 +27,15 @@ export class Agent {
     }
   }
 
-  parseText(plainText: String) {
-    const a = plainText.split('\t');
-    return;
-  }
-
   async scrapData(queue: string[]) {
-    for (let url of queue) {
+    for (let line of queue) {
+      let [title, url] = line.split(',');
+
       // Store bid data to crawlled.txt & DB
       const pageData = await this.getHTML(url);
       const $ = cheerio.load(pageData);
-      const title = $('#container > div:nth-child(8) > table > tbody > tr:nth-child(3) > td > div');
-      console.log(title.text().trim().split(' '));
+      // const sDate = $('#inForm > div:nth-child(9) > table > tbody > tr:nth-child(1) > td:nth-child(2) > div');
+      // console.log(sDate.text().trim());
     }
     // update data in crawled.txt
   }

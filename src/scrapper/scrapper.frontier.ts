@@ -27,7 +27,7 @@ export class Frontier {
     try {
       const [scrapStartDate, scrapEndDate] = this.dateCalculater.searchDateWrapper([this.startOfDate, this.endOfDate]);
       this.logger.log(`Start Scrapping Nara from ${scrapStartDate} to ${scrapStartDate}`);
-      const browserOption = option;
+      const browserOption = { ...option, args: ['--no-sandbox'] };
       const browser = await puppeteer.launch(browserOption);
 
       // Listender to control new _blank window popup
