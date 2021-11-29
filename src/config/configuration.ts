@@ -10,7 +10,7 @@ export default () => ({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
-    synchronize: process.env.DB_SYNC || 'true',
+    synchronize: process.env.NODE_ENV === 'prod' ? false : true,
     namingStrategy: new SnakeNamingStrategy(),
   },
   multer: {
@@ -18,5 +18,8 @@ export default () => ({
   },
   passport: {
     secret: process.env.SESSION_SECRET,
+  },
+  api: {
+    key: process.env.API_KEY,
   },
 });
