@@ -107,3 +107,5 @@ dist
 results/*
 
 .dev.env
+yarn.lock
+yarn.lock

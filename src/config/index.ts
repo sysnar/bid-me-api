@@ -2,7 +2,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from './configuration';
 import { typeORMConfig } from './typeorm.config';
-import validationSchema from './validation';
+import validationSchema from './config.validation';
 
 export const getConfigModule = () =>
   ConfigModule.forRoot({
