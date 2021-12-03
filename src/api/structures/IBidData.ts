@@ -1,11 +1,12 @@
 import { IsArray, IsNumber, IsString } from 'class-validator';
+import { BidBoolean } from 'src/models/bid/bid.data.entity';
 
 export interface IBidData extends IBidData.IBidID {
   bidNtceNo: string;
 
   bidNtceOrd: string;
 
-  reNtceYn: string;
+  reNtceYn: BidBoolean;
 
   bidNtceDt: string;
 
@@ -29,7 +30,7 @@ export interface IBidData extends IBidData.IBidID {
 
   rbidPermsnYn: string;
 
-  bidPrtcptLmtYn: string;
+  bidPrtcptLmtYn: BidBoolean;
 
   asignBdgtAmt: string;
 
@@ -49,7 +50,7 @@ export interface IBidData extends IBidData.IBidID {
 
   chgDt: string;
 
-  indstrytyLmtYn: string;
+  indstrytyLmtYn: BidBoolean;
 
   chgNtceRsn: string;
 
@@ -100,8 +101,7 @@ export namespace IBidData {
 
   export interface CreateBidDataDTO extends Omit<IBidData, 'id'> {}
 
-  export class IBidID {
-    @IsString()
+  export interface IBidID {
     id: string;
   }
 }

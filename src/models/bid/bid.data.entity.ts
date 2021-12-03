@@ -1,4 +1,3 @@
-import { Type } from 'class-transformer';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

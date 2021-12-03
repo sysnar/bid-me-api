@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BidData } from '../../models/bid/bid.data.entity';
 import { BidDataRepository } from './bid.data.repository';
 import { ParseBidDataPipe } from 'src/pipes/bid.data.pipe';
-import { IBidData } from '../structures/BMBidData';
+import { IBidData } from '../structures/IBidData';
 
 /*
  * ApiDataService 는 공공데이터 api로부터 데이터를 수집하는 서비스이다.
@@ -44,8 +44,10 @@ export class BidDataService {
   /*
    * 요청을 통해 받아온 API 데이터를 DB 형식에 맞게 필터링, 변환하는 함수
    */
-  getFundamentalItems(g2bApiBody: IBidData.ResponseG2bApiBodyDTO) {
-    return this.bidDataPipe.transform(g2bApiBody);
+  getFundamentalItems(g2bApiBody: IBidData.ResponseG2bApiBodyDTO): BidData[] {
+    return g2bApiBody.items.map((rowItem) => {
+      return this.bidDataRepository.create(this.bidDataPipe.transform(rowItem));
+    });
   }
 
   /*
@@ -64,8 +66,7 @@ export class BidDataService {
         break;
       }
 
-      console.log(this.bidDataPipe.transform(body));
-      // await this.bidDataRepository.save(this.getFundamentalItems(body));
+      await this.bidDataRepository.save(this.getFundamentalItems(body));
       requestG2bApiDataDTO.pageNo++;
     }
   }
