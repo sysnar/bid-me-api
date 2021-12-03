@@ -1,13 +1,14 @@
 import { Body, Controller, Post } from '@nestjs/common';
+
+import { IBidData } from '../structures/IBidData';
 import { BidDataService } from './bid.data.service';
-import { RequestG2bApiDataDTO } from './dto/request-g2bApiData.dto';
 
 @Controller('apidata')
-export class BiddataController {
+export class BidDataController {
   constructor(private bidDataService: BidDataService) {}
 
   @Post()
-  async createBidData(@Body() requestG2bBidDataDTO: RequestG2bApiDataDTO) {
+  async createBidData(@Body() requestG2bBidDataDTO: IBidData.RequestG2bApiDataDTO): Promise<IBidData[]> {
     return await this.bidDataService.createBidData(requestG2bBidDataDTO);
   }
 }
