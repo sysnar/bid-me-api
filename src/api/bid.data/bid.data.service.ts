@@ -15,7 +15,6 @@ import { IBidData } from '../structures/IBidData';
 @Injectable()
 export class BidDataService {
   constructor(
-    private configService: ConfigService,
     private logger: Logger,
     private bidDataPipe: ParseBidDataPipe,
 
