@@ -24,5 +24,6 @@ module.exports = {
         allowSingleExtends: true,
       },
     ],
+    '@typescript-eslint/no-empty-function': ['error', { allow: ['constructors'] }],
   },
 };

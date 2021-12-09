@@ -25,7 +25,7 @@ export class BidDataService {
   /*
    * 공공데이터 api Request(GET)에 쓰일 옵션(RequestG2bApiDataDTO) 객체를 파라미터 형태로 재설정해주는 함수
    */
-  private paramBuilder(options: IBidData.RequestG2bApiDataDTO): string {
+  paramBuilder(options: IBidData.RequestG2bApiDataDTO): string {
     let param = '';
     for (const paramName in options) param += `${paramName}=${options[paramName]}&`;
     return param;
@@ -43,7 +43,7 @@ export class BidDataService {
   /*
    * 요청을 통해 받아온 API 데이터를 DB 형식에 맞게 필터링, 변환하는 함수
    */
-  private getFundamentalItems(g2bApiBody: IBidData.ResponseG2bApiBodyDTO): BidData[] {
+  getFundamentalItems(g2bApiBody: IBidData.ResponseG2bApiBodyDTO): BidData[] {
     return g2bApiBody.items.map((rowItem) => {
       return this.bidDataRepository.create(this.bidDataPipe.transform(rowItem));
     });
@@ -68,7 +68,6 @@ export class BidDataService {
 
       const resultBidData = await this.bidDataRepository.save(this.getFundamentalItems(body));
       createdBidData = [...createdBidData, ...resultBidData];
-
       requestG2bApiDataDTO.pageNo++;
     }
   }
