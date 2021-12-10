@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Repository } from 'typeorm';
 import axios from 'axios';
 
-import { BidBoolean, BidData } from '../../models/bid/bid.data.entity';
+import { BidBoolean, BidData } from '../../models/bid/Bid.Data.entity';
 import { ParseBidDataPipe } from '../../pipes/bid.data.pipe';
 import { BidDataRepository } from './bid.data.repository';
 import { BidDataService } from './bid.data.service';

@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsString } from 'class-validator';
-import { BidBoolean } from 'src/models/bid/bid.data.entity';
+import { BidBoolean } from 'src/models/bid/Bid.Data.entity';
 
 export interface IBidData extends IBidData.IBidID {
   bidNtceNo: string;

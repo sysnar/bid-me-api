@@ -1,4 +1,6 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BidBookmark } from './Bid.Bookmark.entity';
+import { BidViews } from './Bid.Views.entity';
 
 @Entity()
 export class BidData extends BaseEntity {
@@ -85,6 +87,12 @@ export class BidData extends BaseEntity {
 
   @Column()
   public readonly rbidOpengDt: string; // 재입찰 개찰 일시
+
+  @OneToMany(() => BidBookmark, (bookmark) => bookmark.bid)
+  public bookmark: BidBookmark[];
+
+  @OneToMany(() => BidViews, (views) => views.bid)
+  public views: BidViews[];
 }
 
 export enum BidBoolean {
