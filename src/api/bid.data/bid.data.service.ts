@@ -6,7 +6,7 @@ import axios from 'axios';
 import { BidData } from '../../models/bid/Bid.Data.entity';
 import { BidDataRepository } from './bid.data.repository';
 import { ParseBidDataPipe } from '../../common/pipes/bid.data.pipe';
-import { IBidData } from '../structures/IBidData';
+import { IBidData } from '../structure/IBidData';
 
 /*
  * ApiDataService 는 공공데이터 api로부터 데이터를 수집하는 서비스이다.

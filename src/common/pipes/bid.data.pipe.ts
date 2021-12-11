@@ -1,7 +1,7 @@
 import { BadRequestException, Logger, PipeTransform } from '@nestjs/common';
 import Joi from 'joi';
 
-import { IBidData } from 'src/api/structures/IBidData';
+import { IBidData } from 'src/api/structure/IBidData';
 
 export const bidDataSchema = Joi.object({
   bidNtceNo: Joi.required(),
