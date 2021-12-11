@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { BidData } from '../../models/bid/Bid.Data.entity';
 import { BidDataRepository } from './bid.data.repository';
-import { ParseBidDataPipe } from '../../pipes/bid.data.pipe';
+import { ParseBidDataPipe } from '../../common/pipes/bid.data.pipe';
 import { IBidData } from '../structures/IBidData';
 
 /*

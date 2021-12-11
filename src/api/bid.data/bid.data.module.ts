@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BidDataService } from './bid.data.service';
 import { BidDataController } from './bid.data.controller';
 import { BidDataRepository } from './bid.data.repository';
-import { ParseBidDataPipe } from '../../pipes/bid.data.pipe';
+import { ParseBidDataPipe } from '../../common/pipes/bid.data.pipe';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BidDataRepository])],
