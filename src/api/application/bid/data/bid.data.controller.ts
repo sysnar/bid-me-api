@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
-import { IBidData } from '../structure/IBidData';
+import { IBidData } from '../../../structure/IBidData';
 import { BidDataService } from './bid.data.service';
 
 @Controller('apidata')

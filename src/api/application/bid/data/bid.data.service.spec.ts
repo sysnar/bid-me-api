@@ -1,12 +1,12 @@
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Repository } from 'typeorm';
 import axios from 'axios';
 
-import { BidBoolean, BidData } from '../../models/bid/Bid.Data.entity';
-import { ParseBidDataPipe } from '../../common/pipes/bid.data.pipe';
+import { BidBoolean, BidData } from '../../../../models/bid/Bid.Data.entity';
+import { ParseBidDataPipe } from '../../../../common/pipes/bid.data.pipe';
 import { BidDataRepository } from './bid.data.repository';
 import { BidDataService } from './bid.data.service';
+import { MockRepository } from 'src/api/structure/ITest';
 
 /* Axios를 통한 HTTP 통신을 모킹하는 데이터 입니다. */
 const FakeBidData = {
@@ -60,8 +60,6 @@ const mockBidDataRepository = () => ({
 
 /* HTTP 통신결과를 Mocking 하기 위해 Mock axios 라이브러리를 선언합니다. */
 jest.mock('axios');
-
-type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
 
 describe('BidData Service', () => {
   let bidDataService: BidDataService;

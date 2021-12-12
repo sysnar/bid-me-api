@@ -4,7 +4,7 @@ import { BidViews } from '../bid/Bid.Views.entity';
 import { Admin } from './Admin.entity';
 import { Group } from './Group.entity';
 import { Monitor } from './monitor.entity';
-import { RecomandKeyword } from './Recomand_keyword.entity';
+import { RecomandKeyword } from './RecomandKeyword.entity';
 
 /*
  * 본 Entity는 현재 Typescript 컴파일러의 오류로 User.entity.ts -> user.entity.ts로 변경되고 있습니다.

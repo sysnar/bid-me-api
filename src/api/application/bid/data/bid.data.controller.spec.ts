@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ParseBidDataPipe } from '../../common/pipes/bid.data.pipe';
+import { ParseBidDataPipe } from '../../../../common/pipes/bid.data.pipe';
 import { BidDataController } from './bid.data.controller';
 import { BidDataRepository } from './bid.data.repository';
 import { BidDataService } from './bid.data.service';
