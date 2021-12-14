@@ -34,8 +34,8 @@ export class UserUpdateDTO extends PartialType(IUser) {}
 
 export class IUserReponse {
   @IsNumber()
-  @IsNotEmpty()
-  status: number;
+  @IsOptional()
+  status?: number;
 
   @IsBoolean()
   @IsOptional()

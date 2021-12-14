@@ -105,7 +105,7 @@ describe('UserService', () => {
 
   describe('deleteOne', () => {
     it('should delete user', async () => {
-      expect(userService.deleteOne({ id: 'a uuid' })).resolves.toEqual({ status: 200, deleted: true });
+      expect(userService.deleteOne({ id: 'a uuid' })).resolves.toEqual({ deleted: true });
     });
   });
 });

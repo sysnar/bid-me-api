@@ -29,9 +29,9 @@ export class UserService {
   async deleteOne(id: IUserId): Promise<IUserReponse> {
     try {
       await this.userRepository.delete(id);
-      return { status: 200, deleted: true };
+      return { deleted: true };
     } catch (error) {
-      return { status: 500, deleted: false, message: error.message };
+      return { deleted: false };
     }
   }
 }
