@@ -11,9 +11,29 @@ const testUserEmail = 'user1@gmail.com';
 const testUserCreateDt = new Date('2021-12-13');
 const testUserUpdateDt = new Date('2021-12-14');
 const testUserArray = [
-  { id: userId, name: testUserName, email: testUserEmail, password: 'secretpassword', created_dt: testUserCreateDt, updated_dt: testUserUpdateDt },
-  { id: userId, name: 'user2', email: 'user2@gmail.com', password: 'secretpassword', created_dt: new Date('2021-11-11'), updated_dt: new Date('2021-11-12') },
-  { id: userId, name: 'user3', email: 'user3@gmail.com', password: 'secretpassword', created_dt: new Date('2021-1-1') },
+  {
+    id: userId,
+    name: testUserName,
+    email: testUserEmail,
+    password: 'secretpassword',
+    created_dt: testUserCreateDt,
+    updated_dt: testUserUpdateDt,
+  },
+  {
+    id: userId,
+    name: 'user2',
+    email: 'user2@gmail.com',
+    password: 'secretpassword',
+    created_dt: new Date('2021-11-11'),
+    updated_dt: new Date('2021-11-12'),
+  },
+  {
+    id: userId,
+    name: 'user3',
+    email: 'user3@gmail.com',
+    password: 'secretpassword',
+    created_dt: new Date('2021-1-1'),
+  },
 ];
 const testUserOne = testUserArray[0];
 
