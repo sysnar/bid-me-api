@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { v4 as uuidv4 } from 'uuid';
 
-import { MockRepository } from '../../../../api/structure/ITest';
+import { MockRepository } from '@app/api/structure/ITest';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 

@@ -2,11 +2,11 @@ import { Logger } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import axios from 'axios';
 
-import { BidBoolean, BidData } from '../../../../models/bid/Bid.Data.entity';
-import { ParseBidDataPipe } from '../../../../common/pipes/bid.data.pipe';
+import { BidBoolean, BidData } from '@app/models/bid/Bid.Data.entity';
+import { ParseBidDataPipe } from '@app/common/pipes/bid.data.pipe';
+import { MockRepository } from '@app/api/structure/ITest';
 import { BidDataRepository } from './bid.data.repository';
 import { BidDataService } from './bid.data.service';
-import { MockRepository } from 'src/api/structure/ITest';
 
 /* Axios를 통한 HTTP 통신을 모킹하는 데이터 입니다. */
 const FakeBidData = {

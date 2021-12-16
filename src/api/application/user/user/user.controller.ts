@@ -1,7 +1,8 @@
 import { Controller, Delete, Get, Logger, Post, Put } from '@nestjs/common';
-import { IUserId, IUserReponse, UserCreateDTO } from '../../../../api/structure/IUser';
-import { ResponseEntity } from '../../../../common/libs/res-entity/ResponseEntity';
-import { User } from '../../../../models/user/user.entity';
+
+import { IUserId, IUserReponse, UserCreateDTO } from '@app/api/structure/IUser';
+import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
+import { User } from '@app/models/user/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')

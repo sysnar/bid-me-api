@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ResponseEntity } from '../../../../common/libs/res-entity/ResponseEntity';
-import { User } from '../../../../models/user/user.entity';
+import { Logger } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 
+import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
+import { User } from '@app/models/user/user.entity';
 import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
-import { Logger } from '@nestjs/common';
 
 const userId = uuidv4();
 const testUserName = 'user1';
