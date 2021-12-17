@@ -1,6 +1,9 @@
-import { BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
+import { BaseTimeEntity } from '../BaseTimeEntity';
 import { BidBookmark } from '../bid/Bid.Bookmark.entity';
 import { BidViews } from '../bid/Bid.Views.entity';
+import { LocalDateTimeTransformer } from '../transformer/LocalDateTimeTransformer';
 import { Admin } from './Admin.entity';
 import { Group } from './Group.entity';
 import { Monitor } from './monitor.entity';
@@ -13,11 +16,7 @@ import { RecomandKeyword } from './RecomandKeyword.entity';
  * 사용자의 정보를 저장하며, 사용자들이 선택한 여러 부가기능들의 설정을 가리키는 테이블입니다.
  */
 @Entity()
-export class User extends BaseEntity {
-  // 사용자 ID
-  @PrimaryGeneratedColumn('uuid')
-  public readonly id: string;
-
+export class User extends BaseTimeEntity {
   // 사용자명
   @Column()
   public readonly name: string;
@@ -53,12 +52,4 @@ export class User extends BaseEntity {
   // 그룹에 소속되어 있지 않은 경우 사용자의 모니터링 정보
   @OneToOne(() => Monitor, (monitor) => monitor.user)
   public monitor: Monitor;
-
-  // 사용자 가입 일시
-  @Column()
-  public created_dt: Date;
-
-  // 사용자 정보 업데이트 일시
-  @Column()
-  public updated_dt: Date;
 }

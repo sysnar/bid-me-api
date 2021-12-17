@@ -1,4 +1,4 @@
-import { OmitType, PartialType } from '@nestjs/mapped-types';
+import { OmitType } from '@nestjs/mapped-types';
 import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class IUserId {
@@ -22,15 +22,15 @@ export class IUser extends IUserId {
 
   @IsDate()
   @IsNotEmpty()
-  created_dt: Date;
+  createdDt?: string;
 
   @IsDate()
   @IsOptional()
-  updated_dt?: Date;
+  updatedDt?: string;
 }
 
-export class UserCreateDTO extends OmitType(IUser, ['id'] as const) {}
-export class UserUpdateDTO extends PartialType(IUser) {}
+export class UserCreateDTO extends OmitType(IUser, ['id', 'createdDt', 'updatedDt']) {}
+export class UserUpdateDTO extends OmitType(IUser, ['createdDt', 'updatedDt']) {}
 
 export class IUserReponse {
   @IsNumber()

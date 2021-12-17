@@ -20,15 +20,17 @@ export class ResponseEntity<T> {
     return new ResponseEntity<T>(ResponseStatus.OK, '', data);
   }
 
+  // prettier-ignore
   static ERROR_WITH(
-    message: string, //
+    message: string, 
     code: ResponseStatus = ResponseStatus.SERVER_ERROR,
   ): ResponseEntity<string> {
     return new ResponseEntity<string>(code, message, '');
   }
 
+  // prettier-ignore
   static ERROR_WITH_DATA<T>(
-    message: string, //
+    message: string, 
     data: T,
     code: ResponseStatus = ResponseStatus.SERVER_ERROR,
   ): ResponseEntity<T> {

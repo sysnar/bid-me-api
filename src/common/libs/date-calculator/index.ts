@@ -1,34 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { convert, DateTimeFormatter, LocalDate, LocalDateTime, nativeJs } from 'js-joda';
 
-@Injectable()
 export class DateCalculator {
-  private _addMonthNumber: number = 6;
-  private _sumMonthNumber: number = 6;
-  constructor() {}
+  private static DATE_FORMATTER = DateTimeFormatter.ofPattern('yyyy-MM-dd');
+  private static DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm:ss');
 
-  getTodayStr(): Date {
-    return new Date();
+  static toString(localDate: LocalDate | LocalDateTime): string {
+    if (!localDate) return '';
+
+    if (localDate instanceof LocalDate) {
+      return localDate.format(DateCalculator.DATE_FORMATTER);
+    }
+
+    return localDate.format(DateCalculator.DATE_TIME_FORMATTER);
   }
 
-  set setAddMonth(addMonthNumber: number) {
-    this._addMonthNumber = addMonthNumber;
+  static toDate(localDate: LocalDate | LocalDateTime): Date {
+    if (!localDate) return null;
+
+    return convert(localDate).toDate();
   }
 
-  set setSumMonth(sumMonthNumber: number) {
-    this._sumMonthNumber = sumMonthNumber;
+  static toLocalDate(date: Date): LocalDate {
+    if (!date) return null;
+
+    return LocalDate.from(nativeJs(date));
   }
 
-  add6Month(now: Date): Date {
-    return new Date(now.setMonth(now.getMonth() + this._addMonthNumber));
+  static toLocalDateTime(date: Date): LocalDateTime {
+    if (!date) return null;
+
+    return LocalDateTime.from(nativeJs(date));
   }
 
-  sub6Month(now: Date): Date {
-    return new Date(now.setMonth(now.getMonth() - this._sumMonthNumber));
+  static toLocalDateBy(strDate: string): LocalDate {
+    if (!strDate) return null;
+
+    return LocalDate.parse(strDate, DateCalculator.DATE_FORMATTER);
   }
 
-  searchDateWrapper(dates: Date[]): string[] {
-    return dates.map<string>((date: Date): string => {
-      return date.getFullYear() + '/' + ('0' + (date.getMonth() + 1)).slice(-2) + '/' + date.getDate();
-    });
+  static toLocalDateTimeBy(strDate: string): LocalDateTime {
+    if (!strDate) return null;
+
+    return LocalDateTime.parse(strDate, DateCalculator.DATE_TIME_FORMATTER);
   }
 }
