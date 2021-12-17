@@ -1,6 +1,6 @@
-import { Controller, Delete, Get, Logger, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Post, Put } from '@nestjs/common';
 
-import { IUserId, IUserReponse, UserCreateDTO } from '@app/api/structure/IUser';
+import { IUserId, IUserReponse, UserCreateDTO, UserUpdateDTO } from '@app/api/structure/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { User } from '@app/models/user/user.entity';
 import { UserService } from './user.service';
@@ -13,15 +13,15 @@ export class UserController {
   ) {}
 
   @Get()
-  async getOne(id: IUserId): Promise<ResponseEntity<User>> {
+  async getOne(@Body() id: IUserId): Promise<ResponseEntity<User>> {
     this.logger.log('User GET - Get User');
     return ResponseEntity.OK_WITH(await this.userService.getOne(id));
   }
 
   @Post('signup')
-  async createOne(user: UserCreateDTO): Promise<ResponseEntity<string>> {
+  async createOne(@Body() user: UserCreateDTO): Promise<ResponseEntity<string>> {
     try {
-      await this.userService.updateOne;
+      await this.userService.createOne(user);
       return ResponseEntity.OK();
     } catch (error) {
       this.logger.error(`User POST ${JSON.stringify(user)}`, error);
@@ -30,9 +30,9 @@ export class UserController {
   }
 
   @Put()
-  async updateOne(id: IUserId, user: UserCreateDTO): Promise<ResponseEntity<User | string>> {
+  async updateOne(@Body() user: UserUpdateDTO): Promise<ResponseEntity<User | string>> {
     try {
-      return ResponseEntity.OK_WITH(await this.userService.updateOne(id, user));
+      return ResponseEntity.OK_WITH(await this.userService.updateOne(user));
     } catch (error) {
       this.logger.error(`User Update ${JSON.stringify(user)}`, error);
       return ResponseEntity.ERROR_WITH('회원정보 수정에 실패하였습니다.');
@@ -40,7 +40,7 @@ export class UserController {
   }
 
   @Delete()
-  async deleteOne(id: IUserId): Promise<ResponseEntity<IUserReponse | string>> {
+  async deleteOne(@Body() id: IUserId): Promise<ResponseEntity<IUserReponse | string>> {
     try {
       return ResponseEntity.OK_WITH(await this.userService.deleteOne(id));
     } catch (error) {
