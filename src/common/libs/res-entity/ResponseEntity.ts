@@ -29,8 +29,8 @@ export class ResponseEntity<T> {
 
   static ERROR_WITH_DATA<T>(
     message: string, //
-    code: ResponseStatus = ResponseStatus.SERVER_ERROR,
     data: T,
+    code: ResponseStatus = ResponseStatus.SERVER_ERROR,
   ): ResponseEntity<T> {
     return new ResponseEntity<T>(code, message, data);
   }
