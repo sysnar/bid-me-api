@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, InternalServerErrorException, Logger, Post, Put, UseFilters } from '@nestjs/common';
 
 import { IUserId, IUserReponse, UserCreateDTO, UserUpdateDTO } from '@app/api/structure/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
@@ -25,7 +25,7 @@ export class UserController {
       return ResponseEntity.OK();
     } catch (error) {
       this.logger.error(`User POST ${JSON.stringify(user)}`, error);
-      return ResponseEntity.ERROR_WITH('회원가입에 실패하였습니다.');
+      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH('회원가입에 실패하였습니다.'));
     }
   }
 
@@ -35,7 +35,7 @@ export class UserController {
       return ResponseEntity.OK_WITH(await this.userService.updateOne(user));
     } catch (error) {
       this.logger.error(`User Update ${JSON.stringify(user)}`, error);
-      return ResponseEntity.ERROR_WITH('회원정보 수정에 실패하였습니다.');
+      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH('회원정보 수정에 실패하였습니다.'));
     }
   }
 
@@ -45,7 +45,7 @@ export class UserController {
       return ResponseEntity.OK_WITH(await this.userService.deleteOne(id));
     } catch (error) {
       this.logger.error(`User Delete ${JSON.stringify(id)}`, error);
-      return ResponseEntity.ERROR_WITH('회원 삭제에 실패하였습니다.');
+      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH('회원 삭제에 실패하였습니다.'));
     }
   }
 }
