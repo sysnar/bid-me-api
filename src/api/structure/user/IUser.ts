@@ -1,13 +1,9 @@
 import { OmitType } from '@nestjs/mapped-types';
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class IUserId {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-}
+import { IBaseId } from '../IBase';
 
-export class IUser extends IUserId {
+export class IUser extends IBaseId {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -31,17 +27,3 @@ export class IUser extends IUserId {
 
 export class UserCreateDTO extends OmitType(IUser, ['id', 'createdDt', 'updatedDt']) {}
 export class UserUpdateDTO extends OmitType(IUser, ['createdDt', 'updatedDt']) {}
-
-export class IUserReponse {
-  @IsNumber()
-  @IsOptional()
-  status?: number;
-
-  @IsBoolean()
-  @IsOptional()
-  deleted?: boolean;
-
-  @IsString()
-  @IsOptional()
-  message?: string;
-}

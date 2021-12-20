@@ -1,13 +1,8 @@
 import { OmitType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsString } from 'class-validator';
 
-export class IAdminId {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-}
+import { IBaseId } from '../IBase';
 
-export class IAdmin extends IAdminId {
+export class IAdmin extends IBaseId {
   user_id: string;
 
   createdDt: Date;

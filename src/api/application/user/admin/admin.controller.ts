@@ -10,8 +10,8 @@ import {
 } from '@nestjs/common';
 
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
-import { IUserId } from '@app/api/structure/user/IUser';
 import { AdminService } from './admin.service';
+import { IBaseId } from '@app/api/structure/IBase';
 
 @Controller('admin')
 export class AdminController {
@@ -26,7 +26,7 @@ export class AdminController {
    * 해당하는 userId의 Admin 정보를 반환
    */
   @Get()
-  async getAdmin(@Body() userId: IUserId) {
+  async getAdmin(@Body() userId: IBaseId) {
     try {
       const resData = await this.adminService.getAdmin(userId);
       return ResponseEntity.OK_WITH(resData);
@@ -43,7 +43,7 @@ export class AdminController {
    * 해당하는 userId를 Admin으로 등록
    */
   @Post()
-  async createAdmin(@Body() userId: IUserId) {
+  async createAdmin(@Body() userId: IBaseId) {
     try {
       const admin = await this.adminService.createAdmin(userId);
       return ResponseEntity.OK_WITH(admin);
@@ -60,7 +60,7 @@ export class AdminController {
    * 해당하는 userId의 관리자 권한을 삭제
    */
   @Delete()
-  async deleteAdmin(@Body() userId: IUserId) {
+  async deleteAdmin(@Body() userId: IBaseId) {
     try {
       const deleted = await this.adminService.deleteAdmin(userId);
 

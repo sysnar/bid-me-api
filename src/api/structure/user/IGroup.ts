@@ -3,14 +3,9 @@ import { OmitType } from '@nestjs/mapped-types';
 import { Expose, Transform } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { LocalDateTime } from 'js-joda';
+import { IBaseId } from '../IBase';
 
-export class IGroupId {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
-}
-
-export class IGroup extends IGroupId {
+export class IGroup extends IBaseId {
   @Expose()
   @IsString()
   @IsNotEmpty()

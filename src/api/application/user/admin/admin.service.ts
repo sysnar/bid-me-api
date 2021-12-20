@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { IAdminId } from '@app/api/structure/user/IAdmin';
-import { IUserId } from '@app/api/structure/user/IUser';
 import { Admin } from '@app/models/user/Admin.entity';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from '../user/user.repository';
+import { IBaseId } from '@app/api/structure/IBase';
 
 @Injectable()
 export class AdminService {
@@ -13,17 +12,17 @@ export class AdminService {
     private userRepository: UserRepository,
   ) {}
 
-  async getAdmin(id: IAdminId): Promise<Admin> {
+  async getAdmin(id: IBaseId): Promise<Admin> {
     return await this.adminRepository.findOne(id);
   }
 
-  async createAdmin(userId: IUserId): Promise<Admin> {
+  async createAdmin(userId: IBaseId): Promise<Admin> {
     const findUser = await this.userRepository.findOne(userId);
     const createAdmin = this.adminRepository.create({ user: findUser });
     return await this.adminRepository.save(createAdmin);
   }
 
-  async deleteAdmin(userId: IUserId): Promise<boolean> {
+  async deleteAdmin(userId: IBaseId): Promise<boolean> {
     const findAdmin = await this.adminRepository.findAdminByUserId(userId);
 
     if (!findAdmin) return false;

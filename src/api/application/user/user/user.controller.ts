@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -9,10 +10,11 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { IUserId, IUserReponse, UserCreateDTO, UserUpdateDTO } from '@app/api/structure/user/IUser';
+import { UserCreateDTO, UserUpdateDTO } from '@app/api/structure/user/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { User } from '@app/models/user/user.entity';
 import { UserService } from './user.service';
+import { IBaseId } from '@app/api/structure/IBase';
 
 @Controller('user')
 export class UserController {
@@ -22,7 +24,7 @@ export class UserController {
   ) {}
 
   @Get()
-  async getOne(@Body() id: IUserId): Promise<ResponseEntity<User>> {
+  async getOne(@Body() id: IBaseId): Promise<ResponseEntity<User>> {
     this.logger.log('User GET - Get User');
     const resData = await this.userService.getOne(id);
     return ResponseEntity.OK_WITH(resData);
@@ -54,9 +56,15 @@ export class UserController {
   }
 
   @Delete()
-  async deleteOne(@Body() id: IUserId): Promise<ResponseEntity<IUserReponse | string>> {
+  async deleteOne(@Body() id: IBaseId): Promise<ResponseEntity<boolean | string>> {
     try {
-      return ResponseEntity.OK_WITH(await this.userService.deleteOne(id));
+      const deleted = await this.userService.deleteOne(id);
+
+      if (deleted === true) {
+        throw new BadRequestException('삭제할 회원 계정이 존재하지 않습니다.');
+      }
+
+      return ResponseEntity.OK('회원정보 삭제에 성공하였습니다.');
     } catch (error) {
       this.logger.error(`User Delete ${JSON.stringify(id)}`, error);
       throw new InternalServerErrorException(

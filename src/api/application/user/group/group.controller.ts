@@ -11,17 +11,17 @@ import {
   Put,
 } from '@nestjs/common';
 
-import { GroupCreateDTO, GroupUpdateDTO, IGroupId } from '@app/api/structure/user/IGroup';
-import { IUserId } from '@app/api/structure/user/IUser';
+import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { GroupService } from './group.service';
+import { IBaseId } from '@app/api/structure/IBase';
 
 @Controller('group')
 export class GroupController {
   constructor(private groupService: GroupService, private logger: Logger) {}
 
   @Get(':userId')
-  async getGroup(@Param() userId: IUserId) {
+  async getGroup(@Param() userId: IBaseId) {
     try {
       const resData = await this.groupService.getGroup(userId);
       return ResponseEntity.OK_WITH(resData);
@@ -60,7 +60,7 @@ export class GroupController {
   }
 
   @Delete()
-  async deleteGroup(@Body() group: IGroupId) {
+  async deleteGroup(@Body() group: IBaseId) {
     try {
       const deleted = await this.groupService.deleteGroup(group);
 

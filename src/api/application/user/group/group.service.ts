@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { GroupCreateDTO, GroupUpdateDTO, IGroupId } from '@app/api/structure/user/IGroup';
-import { IUserId } from '@app/api/structure/user/IUser';
+import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { GroupRepository } from './group.repository';
+import { IBaseId } from '@app/api/structure/IBase';
 
 @Injectable()
 export class GroupService {
   constructor(private groupRepository: GroupRepository) {}
 
-  async getGroup(userId: IUserId) {
+  async getGroup(userId: IBaseId) {
     return this.groupRepository.findOne();
   }
 
@@ -29,7 +29,7 @@ export class GroupService {
     return await this.groupRepository.findOne(id);
   }
 
-  async deleteGroup(userId: IGroupId): Promise<boolean> {
+  async deleteGroup(userId: IBaseId): Promise<boolean> {
     const findGroup = await this.groupRepository.findOne(userId);
 
     if (!findGroup) return false;
