@@ -1,4 +1,13 @@
-import { BadRequestException, Body, Controller, Delete, Get, InternalServerErrorException, Logger, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  InternalServerErrorException,
+  Logger,
+  Post,
+} from '@nestjs/common';
 
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { IUserId } from '@app/api/structure/IUser';
@@ -23,7 +32,9 @@ export class AdminController {
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Admin GET ${JSON.stringify(userId)}`, error);
-      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH(`관리자 정보조회에 실패하였습니다.`));
+      throw new InternalServerErrorException(
+        ResponseEntity.ERROR_WITH(`관리자 정보조회에 실패하였습니다.`),
+      );
     }
   }
 
@@ -38,7 +49,9 @@ export class AdminController {
       return ResponseEntity.OK_WITH(admin);
     } catch (error) {
       this.logger.error(`Admin POST ${JSON.stringify(userId)}`, error);
-      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH(`관리자 생성에 실패하였습니다.`));
+      throw new InternalServerErrorException(
+        ResponseEntity.ERROR_WITH(`관리자 생성에 실패하였습니다.`),
+      );
     }
   }
 
@@ -58,7 +71,9 @@ export class AdminController {
       return ResponseEntity.OK_WITH('관리자 게정 삭제가 정상적으로 완료되었습니다.');
     } catch (error) {
       this.logger.error(`Admin DELETE ${JSON.stringify(userId)}`, error);
-      throw new InternalServerErrorException(ResponseEntity.ERROR_WITH('관리자 삭제에 실패하였습니다.'));
+      throw new InternalServerErrorException(
+        ResponseEntity.ERROR_WITH('관리자 삭제에 실패하였습니다.'),
+      );
     }
   }
 }
