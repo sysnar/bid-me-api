@@ -8,16 +8,18 @@ import { UserModule } from './api/application/user/user/user.module';
 import { AdminModule } from './api/application/user/admin/admin.module';
 import { ExceptionTransformFilter } from './common/filters/exception-transform.filter';
 import { GroupModule } from './api/application/user/group/group.module';
+import { KeywordModule } from './api/application/user/keyword/keyword.module';
 
 @Module({
   imports: [
-    ScheduleModule.forRoot(), //
+    ScheduleModule.forRoot(),
     getConfigModule(),
     getTypeORMModule(),
     BidDataModule,
     UserModule,
     AdminModule,
     GroupModule,
+    KeywordModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ExceptionTransformFilter }],
 })
