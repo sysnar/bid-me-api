@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { IAdminId } from '@app/api/structure/IAdmin';
-import { IUserId } from '@app/api/structure/IUser';
+import { IAdminId } from '@app/api/structure/user/IAdmin';
+import { IUserId } from '@app/api/structure/user/IUser';
 import { Admin } from '@app/models/user/Admin.entity';
 import { AdminRepository } from './admin.repository';
 import { UserRepository } from '../user/user.repository';

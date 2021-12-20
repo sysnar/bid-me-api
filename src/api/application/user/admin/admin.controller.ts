@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
-import { IUserId } from '@app/api/structure/IUser';
+import { IUserId } from '@app/api/structure/user/IUser';
 import { AdminService } from './admin.service';
 
 @Controller('admin')

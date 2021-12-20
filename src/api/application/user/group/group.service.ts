@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { GroupCreateDTO, GroupUpdateDTO, IGroupId } from '@app/api/structure/IGroup';
-import { IUserId } from '@app/api/structure/IUser';
+import { GroupCreateDTO, GroupUpdateDTO, IGroupId } from '@app/api/structure/user/IGroup';
+import { IUserId } from '@app/api/structure/user/IUser';
 import { GroupRepository } from './group.repository';
 
 @Injectable()

@@ -67,7 +67,12 @@ describe('BidData Service', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [BidDataService, Logger, ParseBidDataPipe, { provide: BidDataRepository, useValue: mockBidDataRepository() }],
+      providers: [
+        BidDataService,
+        Logger,
+        ParseBidDataPipe,
+        { provide: BidDataRepository, useValue: mockBidDataRepository() },
+      ],
     }).compile();
 
     bidDataService = await module.resolve(BidDataService);
@@ -93,7 +98,9 @@ describe('BidData Service', () => {
   describe('bidData Service paramBuilder', () => {
     it('should create URL query', () => {
       const result = bidDataService.paramBuilder(paramDTO);
-      expect(result).toBe('inqryDiv=1&inqryBgnDt=202101010000&inqryEndDt=202106300000&type=json&pageNo=1&numOfRows=100&ServiceKey=APIKEY&');
+      expect(result).toBe(
+        'inqryDiv=1&inqryBgnDt=202101010000&inqryEndDt=202106300000&type=json&pageNo=1&numOfRows=100&ServiceKey=APIKEY&',
+      );
     });
   });
 

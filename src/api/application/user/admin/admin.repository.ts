@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 
 import { Admin } from '@app/models/user/Admin.entity';
-import { IUserId } from '@app/api/structure/IUser';
+import { IUserId } from '@app/api/structure/user/IUser';
 
 @EntityRepository(Admin)
 export class AdminRepository extends Repository<Admin> {

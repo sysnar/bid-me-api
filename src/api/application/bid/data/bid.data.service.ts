@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { ParseBidDataPipe } from '@app/common/pipes/bid.data.pipe';
 import { BidData } from '@app/models/bid/Bid.Data.entity';
-import { IBidData } from '@app/api/structure/IBidData';
+import { IBidData } from '@app/api/structure/bid/IBidData';
 import { BidDataRepository } from './bid.data.repository';
 
 /*
@@ -33,10 +33,14 @@ export class BidDataService {
   /*
    * 기존 설정된 api End-point에 요청을 보내 받은 결과값을 반환하는 함수
    */
-  async requestG2bApiData(requestG2bApiDataDTO: IBidData.RequestG2bApiDataDTO): Promise<IBidData.ResponseG2bApiDataDTO> {
+  async requestG2bApiData(
+    requestG2bApiDataDTO: IBidData.RequestG2bApiDataDTO,
+  ): Promise<IBidData.ResponseG2bApiDataDTO> {
     const _G2BApiDataURL = `http://apis.data.go.kr/1230000/BidPublicInfoService02/getBidPblancListInfoServc?`;
     const param = this.paramBuilder(requestG2bApiDataDTO);
-    return axios.get(_G2BApiDataURL + param).then((response: any): IBidData.ResponseG2bApiDataDTO => response.data.response);
+    return axios
+      .get(_G2BApiDataURL + param)
+      .then((response: any): IBidData.ResponseG2bApiDataDTO => response.data.response);
   }
 
   /*
@@ -51,7 +55,9 @@ export class BidDataService {
   /*
    * 설정된 기간 내의 모든 입찰공고를 생성하는 함수
    */
-  public async createBidData(requestG2bApiDataDTO: IBidData.RequestG2bApiDataDTO): Promise<IBidData[]> {
+  public async createBidData(
+    requestG2bApiDataDTO: IBidData.RequestG2bApiDataDTO,
+  ): Promise<IBidData[]> {
     let createdBidData: IBidData[] = [];
     while (true) {
       const { header, body } = await this.requestG2bApiData(requestG2bApiDataDTO);
@@ -59,7 +65,10 @@ export class BidDataService {
       if (header.resultCode !== '00') {
         // 정상적인 response가 이루어지지 않았을 경우 에러 발생
         this.logger.error('Service createApiData Error: response result is not valid');
-        throw new HttpException('Service createApiData Error: response result is not valid', HttpStatus.INTERNAL_SERVER_ERROR);
+        throw new HttpException(
+          'Service createApiData Error: response result is not valid',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       } else if (body.items.length === 0) {
         // 마지막 페이지까지 요청이 완료되었을 경우 메세지와 함께 반환
         return createdBidData;

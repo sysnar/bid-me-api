@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { IUserId, IUserReponse, UserCreateDTO, UserUpdateDTO } from '@app/api/structure/IUser';
+import { IUserId, IUserReponse, UserCreateDTO, UserUpdateDTO } from '@app/api/structure/user/IUser';
 import { User } from '@app/models/user/user.entity';
 import { UserRepository } from './user.repository';
 
