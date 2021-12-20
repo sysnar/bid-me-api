@@ -12,12 +12,12 @@ export class ResponseEntity<T> {
     this._data = data;
   }
 
-  static OK(): ResponseEntity<string> {
-    return new ResponseEntity<string>(ResponseStatus.OK, '', '');
+  static OK(message?: string): ResponseEntity<string> {
+    return new ResponseEntity<string>(ResponseStatus.OK, message, '');
   }
 
-  static OK_WITH<T>(data: T): ResponseEntity<T> {
-    return new ResponseEntity<T>(ResponseStatus.OK, '', data);
+  static OK_WITH<T>(data: T, message?: string): ResponseEntity<T> {
+    return new ResponseEntity<T>(ResponseStatus.OK, message, data);
   }
 
   // prettier-ignore
