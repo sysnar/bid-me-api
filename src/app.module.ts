@@ -9,6 +9,7 @@ import { AdminModule } from './api/application/user/admin/admin.module';
 import { ExceptionTransformFilter } from './common/filters/exception-transform.filter';
 import { GroupModule } from './api/application/user/group/group.module';
 import { KeywordModule } from './api/application/user/keyword/keyword.module';
+import { AuthModule } from './api/application/auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { KeywordModule } from './api/application/user/keyword/keyword.module';
     AdminModule,
     GroupModule,
     KeywordModule,
+    AuthModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ExceptionTransformFilter }],
 })

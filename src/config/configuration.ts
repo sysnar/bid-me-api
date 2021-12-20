@@ -22,4 +22,8 @@ export default () => ({
   api: {
     key: process.env.API_KEY,
   },
+  secret: {
+    key: process.env.JWT_SECRET_KEY,
+    expire: process.env.JWT_EXPIRE,
+  },
 });

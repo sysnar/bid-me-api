@@ -1,8 +1,12 @@
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+
 import configuration from './configuration';
 import { typeORMConfig } from './typeorm.config';
 import validationSchema from './config.validation';
+import { JwtConfig } from './jwt.config';
 
 export const getConfigModule = () =>
   ConfigModule.forRoot({
@@ -17,4 +21,10 @@ export const getTypeORMModule = () =>
   TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     useClass: typeORMConfig,
+  });
+
+export const getJwtConfigModule = () =>
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    useClass: JwtConfig,
   });
