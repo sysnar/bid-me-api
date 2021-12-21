@@ -11,7 +11,7 @@ export class JwtConfig implements JwtOptionsFactory {
     return {
       secret: process.env.JWT_SECRET || this.configService.get<string>('secret.key'),
       signOptions: {
-        expiresIn: this.configService.get<number>('secret.expire'),
+        expiresIn: Number(this.configService.get<number>('secret.expire')),
       },
     };
   }

@@ -1,46 +1,40 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
+import { instanceToPlain } from 'class-transformer';
 import * as bcrypt from 'bcrypt';
 
 import { UserCreateDTO } from '@app/api/structure/user/IUser';
-import { UserRepository } from '../user/user/user.repository';
 import { Cipher } from '@app/common/libs/cipher';
 import { AuthCredentialDTO } from '@app/api/structure/IAuth';
+import { ErrorEntity } from '@app/common/libs/error-entity/ErrorEntity';
+import { UserService } from '../user/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private userService: UserService, //
     private jwtService: JwtService,
   ) {}
 
   async signUp(userCreateDTO: UserCreateDTO): Promise<void> {
     const { name, email, password } = userCreateDTO;
-
     const hashedPassword = await Cipher.ENCRYPT(password);
-    const user = this.userRepository.create({ name, email, password: hashedPassword });
-    await this.userRepository.save(user);
+
+    await this.userService.createOne({ name, email, password: hashedPassword });
   }
 
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
     const { name } = authCredentialsDto;
-    const user = await this.userRepository.findOne({ name });
+    const user = await this.userService.getUserByName(name);
 
-    if (user && (await bcrypt)) {
+    if (user && bcrypt) {
       // Create User Token (Secret + Payload)
       const payload = { name }; // Must not contain important informations
       const accessToken = this.jwtService.sign(payload);
 
       return { accessToken };
     } else {
-      throw new UnauthorizedException('login failed');
+      throw instanceToPlain(ErrorEntity.SERVICE_ERROR('400'));
     }
   }
 }
