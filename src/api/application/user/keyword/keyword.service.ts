@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { IBaseId } from '@app/api/structure/IBase';
 import { IKeyword, KeywordCreateDTO } from '@app/api/structure/user/IKeyword';
@@ -6,7 +7,10 @@ import { KeywordRepository } from './keyword.repository';
 
 @Injectable()
 export class KeywordService {
-  constructor(private keywordRepository: KeywordRepository) {}
+  constructor(
+    @InjectRepository(KeywordRepository)
+    private keywordRepository: KeywordRepository,
+  ) {}
 
   async getKeyword(keywordId: IBaseId) {
     return await this.keywordRepository.findOne(keywordId);

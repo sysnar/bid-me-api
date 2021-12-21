@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserCreateDTO, UserUpdateDTO } from '@app/api/structure/user/IUser';
 import { User } from '@app/models/user/user.entity';
@@ -7,7 +8,10 @@ import { IBaseId } from '@app/api/structure/IBase';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(UserRepository)
+    private userRepository: UserRepository,
+  ) {}
 
   async getAll(): Promise<User[]> {
     return await this.userRepository.find();

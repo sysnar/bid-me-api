@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { Admin } from '@app/models/user/Admin.entity';
 import { AdminRepository } from './admin.repository';
@@ -8,7 +9,8 @@ import { IBaseId } from '@app/api/structure/IBase';
 @Injectable()
 export class AdminService {
   constructor(
-    private adminRepository: AdminRepository, //
+    @InjectRepository(AdminRepository)
+    private adminRepository: AdminRepository,
     private userRepository: UserRepository,
   ) {}
 

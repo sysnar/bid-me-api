@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { GroupRepository } from './group.repository';
@@ -6,7 +7,10 @@ import { IBaseId } from '@app/api/structure/IBase';
 
 @Injectable()
 export class GroupService {
-  constructor(private groupRepository: GroupRepository) {}
+  constructor(
+    @InjectRepository(GroupRepository)
+    private groupRepository: GroupRepository,
+  ) {}
 
   async getGroup(userId: IBaseId) {
     return this.groupRepository.findOne();
