@@ -8,7 +8,7 @@ export class AdminRepository extends Repository<Admin> {
   /*
    *  Admin 중 해당하는 User ID의 Admin 정보 조회
    */
-  async findAdminByUserId(userId: string): Promise<Admin> {
+  async findByUserId(userId: string): Promise<Admin> {
     return await this.createQueryBuilder('admin') //
       .where('user_id = :id', { id: userId })
       .getOne();
@@ -17,7 +17,7 @@ export class AdminRepository extends Repository<Admin> {
   /*
    *  Admin 중 해당하는 User ID의 Admin 정보를 삭제
    */
-  async deleteAdminByUserId(userId: string): Promise<void> {
+  async deleteByUserId(userId: string): Promise<void> {
     await this.createQueryBuilder('admin') //
       .delete()
       .where('user_id = :id', { id: userId })

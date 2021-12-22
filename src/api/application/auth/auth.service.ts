@@ -27,7 +27,7 @@ export class AuthService {
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
     const { name } = authCredentialsDto;
     const user = await this.userService.findByUserName(name);
-    const admin = await this.adminService.findByUserId(user.id);
+    const admin = await this.adminService.findOneByUserId(user.id);
 
     if (admin) {
       const adminId = admin.id;

@@ -32,7 +32,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     if (role) {
-      const admin: Admin = await this.adminService.findByUserId(id);
+      const admin: Admin = await this.adminService.findOneByUserId(id);
       return { user, admin };
     }
 
