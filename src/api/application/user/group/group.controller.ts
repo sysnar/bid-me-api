@@ -14,13 +14,14 @@ import {
 import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { GroupService } from './group.service';
+import { Group } from '@app/models/user/Group.entity';
 
 @Controller('group')
 export class GroupController {
   constructor(private groupService: GroupService, private logger: Logger) {}
 
   @Get(':id')
-  async getGroup(@Param('id') id: string) {
+  async getGroup(@Param('id') id: string): Promise<ResponseEntity<Group>> {
     try {
       const resData = await this.groupService.findOneById(id);
       return ResponseEntity.OK_WITH(resData);
@@ -33,7 +34,7 @@ export class GroupController {
   }
 
   @Post()
-  async createGroup(@Body() group: GroupCreateDTO) {
+  async createGroup(@Body() group: GroupCreateDTO): Promise<ResponseEntity<Group>> {
     try {
       const resData = await this.groupService.create(group);
       return ResponseEntity.OK_WITH(resData);
@@ -46,7 +47,7 @@ export class GroupController {
   }
 
   @Put()
-  async updateGroup(@Body() group: GroupUpdateDTO) {
+  async updateGroup(@Body() group: GroupUpdateDTO): Promise<ResponseEntity<Group>> {
     try {
       const resData = await this.groupService.update(group);
       return ResponseEntity.OK_WITH(resData);
@@ -59,7 +60,7 @@ export class GroupController {
   }
 
   @Delete()
-  async deleteGroup(@Body('id') id: string) {
+  async deleteGroup(@Body('id') id: string): Promise<ResponseEntity<string>> {
     try {
       const deleted = await this.groupService.delete(id);
 
