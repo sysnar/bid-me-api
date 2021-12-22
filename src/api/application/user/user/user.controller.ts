@@ -26,7 +26,7 @@ export class UserController {
   @Get()
   async getOne(@Body() id: IBaseId): Promise<ResponseEntity<User>> {
     this.logger.log('User GET - Get User');
-    const resData = await this.userService.getOne(id);
+    const resData = await this.userService.getOne(id.id);
     return ResponseEntity.OK_WITH(resData);
   }
 

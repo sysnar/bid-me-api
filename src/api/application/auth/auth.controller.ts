@@ -17,6 +17,7 @@ import { ResponseStatus } from '@app/common/libs/res-entity/ResponseStatus';
 import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
 import { Token } from '@app/common/decorators/token.decorator';
 import { User } from '@app/models/user/user.entity';
+import { Roles } from '@app/common/decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -64,6 +65,7 @@ export class AuthController {
   }
 
   @Post('/logout')
+  @Roles('admin')
   @UseGuards(JwtAuthGuard)
   async logOut(@Token() user: User) {
     try {

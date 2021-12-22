@@ -14,17 +14,21 @@ export class AdminService {
     private userRepository: UserRepository,
   ) {}
 
-  async getAdmin(id: IBaseId): Promise<Admin> {
-    return await this.adminRepository.findOne(id);
+  async getAdmin(id: string): Promise<Admin> {
+    return await this.adminRepository.findOne({ id });
   }
 
-  async createAdmin(userId: IBaseId): Promise<Admin> {
+  async findByUserId(userId: string): Promise<Admin> {
+    return await this.adminRepository.findAdminByUserId(userId);
+  }
+
+  async createAdmin(userId: string): Promise<Admin> {
     const findUser = await this.userRepository.findOne(userId);
     const createAdmin = this.adminRepository.create({ user: findUser });
     return await this.adminRepository.save(createAdmin);
   }
 
-  async deleteAdmin(userId: IBaseId): Promise<boolean> {
+  async deleteAdmin(userId: string): Promise<boolean> {
     const findAdmin = await this.adminRepository.findAdminByUserId(userId);
 
     if (!findAdmin) return false;

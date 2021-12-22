@@ -7,12 +7,14 @@ import { Cipher } from '@app/common/libs/cipher';
 import { AuthCredentialDTO } from '@app/api/structure/IAuth';
 import { ErrorEntity } from '@app/common/libs/error-entity/ErrorEntity';
 import { UserService } from '../user/user/user.service';
+import { AdminService } from '../user/admin/admin.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService, //
     private jwtService: JwtService,
+    private adminService: AdminService,
   ) {}
 
   async signUp(userCreateDTO: UserCreateDTO): Promise<void> {
@@ -25,10 +27,19 @@ export class AuthService {
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
     const { name } = authCredentialsDto;
     const user = await this.userService.findByUserName(name);
+    const admin = await this.adminService.findByUserId(user.id);
 
-    if (user) {
+    if (admin) {
+      const adminId = admin.id;
+      // Create Admin Token (Secret + Payload)
+      const payload = { id: user.id, role: 'ADMIN', roleId: adminId }; // Must not contain important informations
+      const accessToken = this.jwtService.sign(payload);
+
+      return { accessToken };
+    } else if (user) {
+      const userId = user.id;
       // Create User Token (Secret + Payload)
-      const payload = { id: user.id }; // Must not contain important informations
+      const payload = { id: userId }; // Must not contain important informations
       const accessToken = this.jwtService.sign(payload);
 
       return { accessToken };

@@ -28,7 +28,7 @@ export class AdminController {
   @Get()
   async getAdmin(@Body() userId: IBaseId) {
     try {
-      const resData = await this.adminService.getAdmin(userId);
+      const resData = await this.adminService.getAdmin(userId.id);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Admin GET ${JSON.stringify(userId)}`, error);
@@ -45,7 +45,7 @@ export class AdminController {
   @Post()
   async createAdmin(@Body() userId: IBaseId) {
     try {
-      const admin = await this.adminService.createAdmin(userId);
+      const admin = await this.adminService.createAdmin(userId.id);
       return ResponseEntity.OK_WITH(admin);
     } catch (error) {
       this.logger.error(`Admin POST ${JSON.stringify(userId)}`, error);
@@ -62,7 +62,7 @@ export class AdminController {
   @Delete()
   async deleteAdmin(@Body() userId: IBaseId) {
     try {
-      const deleted = await this.adminService.deleteAdmin(userId);
+      const deleted = await this.adminService.deleteAdmin(userId.id);
 
       if (deleted !== true) {
         throw new BadRequestException('삭제할 관리자 계정이 존재하지 않습니다.');
