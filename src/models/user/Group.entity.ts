@@ -15,7 +15,6 @@ export class Group extends BaseTimeEntity {
 
   // 해당하는 그룹의 입찰공고 모니터링 설정 ID
   @OneToOne(() => User, (user) => user.group)
-  @JoinColumn()
   user: User;
 
   // 해당하는 그룹의 입찰공고 모니터링 설정 ID

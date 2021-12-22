@@ -1,9 +1,8 @@
-import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 import { BaseTimeEntity } from '../BaseTimeEntity';
 import { BidBookmark } from '../bid/Bid.Bookmark.entity';
 import { BidViews } from '../bid/Bid.Views.entity';
-import { LocalDateTimeTransformer } from '../transformer/LocalDateTimeTransformer';
 import { Admin } from './Admin.entity';
 import { Group } from './Group.entity';
 import { Monitor } from './monitor.entity';
@@ -31,10 +30,12 @@ export class User extends BaseTimeEntity {
 
   // 사용자 관리자 여부
   @OneToOne(() => Admin, (admin) => admin.user)
+  @JoinColumn()
   public admin: Admin;
 
   // 사용자 소속 그룹
   @OneToOne(() => Group, (group) => group.user)
+  @JoinColumn()
   public group: Group;
 
   // 사용자 관심 키워드 리스트
@@ -51,5 +52,6 @@ export class User extends BaseTimeEntity {
 
   // 그룹에 소속되어 있지 않은 경우 사용자의 모니터링 정보
   @OneToOne(() => Monitor, (monitor) => monitor.user)
+  @JoinColumn()
   public monitor: Monitor;
 }
