@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -31,7 +30,7 @@ export class KeywordController {
   @Get(':keywordId')
   async getKeyword(@Param() keywordId: IBaseId) {
     try {
-      const resData = await this.keywordService.getKeyword(keywordId);
+      const resData = await this.keywordService.findOneById(keywordId);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Keyword - GET ${JSON.stringify(keywordId)}`, error);
@@ -48,7 +47,7 @@ export class KeywordController {
   @Post()
   async createKeyword(@Body() keyword: KeywordCreateDTO) {
     try {
-      const resData = await this.keywordService.createKeyword(keyword);
+      const resData = await this.keywordService.create(keyword);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Keyword POST ${JSON.stringify(keyword)}`, error);
@@ -63,9 +62,9 @@ export class KeywordController {
    * 해당하는 키워드의 이름을 수정
    */
   @Put()
-  async createAdmin(@Body() keyword: IKeyword) {
+  async updateKeyword(@Body() keyword: IKeyword) {
     try {
-      const resData = await this.keywordService.updateKeyword(keyword);
+      const resData = await this.keywordService.update(keyword);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Keyword POST ${JSON.stringify(keyword)}`, error);
@@ -80,9 +79,9 @@ export class KeywordController {
    * 해당하는 키워드명을 삭제
    */
   @Delete()
-  async deleteAdmin(@Body() keywordId: IBaseId) {
+  async deleteKeyword(@Body() keywordId: IBaseId) {
     try {
-      await this.keywordService.deleteKeyword(keywordId);
+      await this.keywordService.delete(keywordId);
       return ResponseEntity.OK_WITH('키워드 삭제가 정상적으로 완료되었습니다.');
     } catch (error) {
       this.logger.error(`Keyword DELETE ${JSON.stringify(keywordId)}`, error);
