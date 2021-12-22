@@ -15,6 +15,8 @@ import { UserCreateDTO } from '@app/api/structure/user/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { ResponseStatus } from '@app/common/libs/res-entity/ResponseStatus';
 import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
+import { Token } from '@app/common/decorators/token.decorator';
+import { User } from '@app/models/user/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +38,7 @@ export class AuthController {
     }
   }
 
-  @Post('/signin')
+  @Post('/login')
   async signIn(
     @Body() authCredentialDTO: AuthCredentialDTO,
   ): Promise<ResponseEntity<{ accessToken: string }>> {
@@ -61,10 +63,18 @@ export class AuthController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('/logout')
-  async logOut() {
-    console.log('success');
-    return '123';
+  @UseGuards(JwtAuthGuard)
+  async logOut(@Token() user: User) {
+    try {
+      // Need to be Refecotored with logout logic
+      // Make a black list with Redis
+      return ResponseEntity.OK('회원 로그아웃에 성공하였습니다.');
+    } catch (error) {
+      this.logger.error(`Auth - LOGOUT ${JSON.stringify(user)}`, error);
+      throw new InternalServerErrorException(
+        ResponseEntity.ERROR_WITH('회원 로그아웃에 실패하였습니다.'),
+      );
+    }
   }
 }
