@@ -21,12 +21,12 @@ export class AuthService {
     const { name, email, password } = userCreateDTO;
     const hashedPassword = await Cipher.ENCRYPT(password);
 
-    await this.userService.createOne({ name, email, password: hashedPassword });
+    await this.userService.create({ name, email, password: hashedPassword });
   }
 
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
     const { name } = authCredentialsDto;
-    const user = await this.userService.findByUserName(name);
+    const user = await this.userService.findByName(name);
     const admin = await this.adminService.findOneByUserId(user.id);
 
     if (admin) {
