@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { GroupRepository } from './group.repository';
-import { IBaseId } from '@app/api/structure/IBase';
+import { Group } from '@app/models/user/Group.entity';
 
 @Injectable()
 export class GroupService {
@@ -12,11 +12,11 @@ export class GroupService {
     private groupRepository: GroupRepository,
   ) {}
 
-  async getGroup(userId: IBaseId) {
-    return this.groupRepository.findOne();
+  async findOneById(id: string): Promise<Group> {
+    return this.groupRepository.findOne({ id });
   }
 
-  async createGroup(group: GroupCreateDTO) {
+  async create(group: GroupCreateDTO): Promise<Group> {
     const findGroup = await this.groupRepository.findOne({ where: [{ name: group.name }] });
     const createGroup = this.groupRepository.create(group);
 
@@ -27,18 +27,18 @@ export class GroupService {
     return await this.groupRepository.save(createGroup);
   }
 
-  async updateGroup(group: GroupUpdateDTO) {
+  async update(group: GroupUpdateDTO): Promise<Group> {
     const { id, ...updateGroup } = group;
     await this.groupRepository.update(id, updateGroup);
     return await this.groupRepository.findOne(id);
   }
 
-  async deleteGroup(userId: IBaseId): Promise<boolean> {
-    const findGroup = await this.groupRepository.findOne(userId);
+  async delete(id: string): Promise<boolean> {
+    const findGroup = await this.groupRepository.findOne({ id });
 
     if (!findGroup) return false;
 
-    await this.groupRepository.delete(userId);
+    await this.groupRepository.delete(id);
     return true;
   }
 }

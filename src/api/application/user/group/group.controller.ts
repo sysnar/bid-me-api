@@ -14,19 +14,18 @@ import {
 import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { GroupService } from './group.service';
-import { IBaseId } from '@app/api/structure/IBase';
 
 @Controller('group')
 export class GroupController {
   constructor(private groupService: GroupService, private logger: Logger) {}
 
-  @Get(':userId')
-  async getGroup(@Param() userId: IBaseId) {
+  @Get(':id')
+  async getGroup(@Param('id') id: string) {
     try {
-      const resData = await this.groupService.getGroup(userId);
+      const resData = await this.groupService.findOneById(id);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
-      this.logger.error(`Group GET - ${JSON.stringify(userId)}`, error);
+      this.logger.error(`Group GET - ${JSON.stringify(id)}`, error);
       throw new InternalServerErrorException(
         ResponseEntity.ERROR_WITH('그룹 조회에 실패하였습니다.'),
       );
@@ -36,7 +35,7 @@ export class GroupController {
   @Post()
   async createGroup(@Body() group: GroupCreateDTO) {
     try {
-      const resData = await this.groupService.createGroup(group);
+      const resData = await this.groupService.create(group);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Group Post - ${JSON.stringify(group)}`, error);
@@ -49,7 +48,7 @@ export class GroupController {
   @Put()
   async updateGroup(@Body() group: GroupUpdateDTO) {
     try {
-      const resData = await this.groupService.updateGroup(group);
+      const resData = await this.groupService.update(group);
       return ResponseEntity.OK_WITH(resData);
     } catch (error) {
       this.logger.error(`Group PUT - ${JSON.stringify(group)}`, error);
@@ -60,9 +59,9 @@ export class GroupController {
   }
 
   @Delete()
-  async deleteGroup(@Body() group: IBaseId) {
+  async deleteGroup(@Body('id') id: string) {
     try {
-      const deleted = await this.groupService.deleteGroup(group);
+      const deleted = await this.groupService.delete(id);
 
       if (deleted === false) {
         throw new BadRequestException('삭제할 관리자 계정이 존재하지 않습니다.');
@@ -70,7 +69,7 @@ export class GroupController {
 
       return ResponseEntity.OK('그룹 삭제 완료');
     } catch (error) {
-      this.logger.error(`Group DELETE - ${JSON.stringify(group)}`, error);
+      this.logger.error(`Group DELETE - ${JSON.stringify(id)}`, error);
       throw new InternalServerErrorException(
         ResponseEntity.ERROR_WITH('그룹 삭제에 실패하였습니다.'),
       );
