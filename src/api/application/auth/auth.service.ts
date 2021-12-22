@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { instanceToPlain } from 'class-transformer';
-import * as bcrypt from 'bcrypt';
 
 import { UserCreateDTO } from '@app/api/structure/user/IUser';
 import { Cipher } from '@app/common/libs/cipher';
@@ -25,11 +24,11 @@ export class AuthService {
 
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
     const { name } = authCredentialsDto;
-    const user = await this.userService.getUserByName(name);
+    const user = await this.userService.findByUserName(name);
 
-    if (user && bcrypt) {
+    if (user) {
       // Create User Token (Secret + Payload)
-      const payload = { name }; // Must not contain important informations
+      const payload = { id: user.id }; // Must not contain important informations
       const accessToken = this.jwtService.sign(payload);
 
       return { accessToken };

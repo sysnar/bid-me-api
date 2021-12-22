@@ -21,8 +21,12 @@ export class UserService {
     return await this.userRepository.findOne(id);
   }
 
-  async getUserByName(name: string) {
+  async findByUserName(name: string) {
     return await this.userRepository.findOne({ where: { name } });
+  }
+
+  async findByUserId(id: string) {
+    return await this.userRepository.findOne({ where: { id } });
   }
 
   async createOne(user: UserCreateDTO): Promise<User> {
