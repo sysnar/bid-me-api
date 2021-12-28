@@ -7,7 +7,6 @@ import { User } from '@app/models/user/user.entity';
 import { UserService } from '@app/api/application/user/user/user.service';
 import { AdminService } from '@app/api/application/user/admin/admin.service';
 import { Admin } from '@app/models/user/Admin.entity';
-import { IBaseId } from '@app/api/structure/IBase';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -23,12 +22,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /*
+   * 사용자 로그인 검증 - Guard의 canActivate를 통해 실행됨
+   * Controller에서 전달받은 userId와 Role을 검증함
+   *
+   * role이 없을 경우 - User객체를 request에 포함
+   * role이 있을 경우 - User객체와 Admin객체를 request에 포함
+   */
   async validate(payload) {
     const { id, role } = payload;
     const user: User = await this.userService.findById(id);
 
     if (Object.keys(user).length <= 0) {
-      throw new UnauthorizedException('JWT Auth Validation fail');
+      throw new UnauthorizedException('JWT Strategy - Auth Validation fail');
     }
 
     if (role) {
