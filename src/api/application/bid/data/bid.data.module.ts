@@ -11,5 +11,6 @@ import { BiDRequestService } from './bid.request.service';
   imports: [TypeOrmModule.forFeature([BidDataRepository])],
   controllers: [BidDataController],
   providers: [BidDataService, BiDRequestService, Logger, ParseBidDataPipe],
+  exports: [BidDataService],
 })
 export class BidDataModule {}

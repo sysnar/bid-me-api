@@ -21,6 +21,10 @@ export class BidDataService {
     private bidDataRepository: BidDataRepository,
   ) {}
 
+  async findOneById(id: string): Promise<BidData> {
+    return await this.bidDataRepository.findOne({ id });
+  }
+
   async findOneByKeyword(keyword: string): Promise<BidData[]> {
     console.log(await this.bidDataRepository.find({ where: { bidNtceNm: Like(`%${keyword}%`) } }));
     console.log(keyword);

@@ -6,7 +6,7 @@ import { BidData } from './Bid.Data.entity';
  * 사용자가 관심입찰공고로 등록한 리스트를 저장하는 테이블입니다.
  */
 @Entity()
-export class BidBookmark extends BaseEntity {
+export class BidBookmark {
   // 책갈피 ID
   @PrimaryGeneratedColumn('uuid')
   id: string;

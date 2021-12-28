@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, OneToMany, OneToOne, Unique } from 'typeorm';
 
 import { BaseTimeEntity } from '../BaseTimeEntity';
 import { BidBookmark } from '../bid/Bid.Bookmark.entity';
@@ -18,6 +18,7 @@ import { RecomandKeyword } from './RecomandKeyword.entity';
 export class User extends BaseTimeEntity {
   // 사용자명
   @Column()
+  @Index({ unique: true })
   public readonly name: string;
 
   // 사용자 이메일
