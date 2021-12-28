@@ -1,7 +1,7 @@
 import { BadRequestException, Logger, PipeTransform } from '@nestjs/common';
 import Joi from 'joi';
 
-import { IBidData } from '@app/api/structure/bid/IBidData';
+import { CreateBidDataDTO } from '@app/api/structure/bid/IBidData';
 
 export const bidDataSchema = Joi.object({
   bidNtceNo: Joi.required(),
@@ -33,8 +33,8 @@ export const bidDataSchema = Joi.object({
   rbidOpengDt: Joi.required(),
 }).options({ abortEarly: false, allowUnknown: true });
 
-export class ParseBidDataPipe implements PipeTransform<any, IBidData.CreateBidDataDTO> {
-  public transform(query: any): IBidData.CreateBidDataDTO {
+export class ParseBidDataPipe implements PipeTransform<any, CreateBidDataDTO> {
+  public transform(query: any): CreateBidDataDTO {
     const result = bidDataSchema.validate(query, {
       convert: true,
     });
@@ -45,7 +45,7 @@ export class ParseBidDataPipe implements PipeTransform<any, IBidData.CreateBidDa
       throw new BadRequestException(errorMessages);
     }
 
-    const validBidData: IBidData.CreateBidDataDTO = result.value;
+    const validBidData: CreateBidDataDTO = result.value;
     return {
       bidNtceNo: validBidData.bidNtceNo,
       bidNtceOrd: validBidData.bidNtceOrd,

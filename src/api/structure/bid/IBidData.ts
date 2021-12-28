@@ -1,7 +1,12 @@
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { PageRequest } from '@app/common/libs/pagination/PageRequest';
+import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { BidBoolean } from 'src/models/bid/Bid.Data.entity';
 
-export interface IBidData extends IBidData.IBidID {
+export class IBidID {
+  id: string;
+}
+
+export class IBidData extends IBidID {
   bidNtceNo: string;
 
   bidNtceOrd: string;
@@ -56,52 +61,69 @@ export interface IBidData extends IBidData.IBidID {
 
   rbidOpengDt: string;
 }
-export namespace IBidData {
-  export class RequestG2bApiDataDTO {
-    @IsString()
-    inqryDiv = '1';
 
-    @IsString()
-    inqryBgnDt = '202101010000';
+export class RequestG2bApiDataDTO {
+  @IsString()
+  inqryDiv = '1';
 
-    @IsString()
-    inqryEndDt = '202106300000';
+  @IsString()
+  inqryBgnDt = '202101010000';
 
-    @IsString()
-    type = 'json';
+  @IsString()
+  inqryEndDt = '202106300000';
 
-    @IsNumber()
-    pageNo = 1;
+  @IsString()
+  type = 'json';
 
-    @IsNumber()
-    numOfRows = 100;
+  @IsNumber()
+  pageNo = 1;
 
-    @IsString()
-    ServiceKey = process.env.API_KEY;
+  @IsNumber()
+  numOfRows = 100;
+
+  @IsString()
+  ServiceKey = process.env.API_KEY;
+}
+
+export class ResponseG2bApiHeaderDTO {
+  @IsString()
+  resultCode: string;
+
+  @IsString()
+  resultMsg: string;
+}
+
+export class ResponseG2bApiBodyDTO {
+  @IsArray()
+  items: IBidData[];
+}
+
+export interface ResponseG2bApiDataDTO {
+  header: ResponseG2bApiHeaderDTO;
+
+  body: ResponseG2bApiBodyDTO;
+}
+
+export interface CreateBidDataDTO extends Omit<IBidData, 'id'> {}
+
+export class BidDataSearchDTO extends PageRequest {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  constructor() {
+    super();
   }
 
-  export class ResponseG2bApiHeaderDTO {
-    @IsString()
-    resultCode: string;
-
-    @IsString()
-    resultMsg: string;
+  static create(name: string, pageNo: number, pageSize: number) {
+    const param = new BidDataSearchDTO();
+    param.name = name;
+    param.pageNo = pageNo;
+    param.pageSize = pageSize;
+    return param;
   }
 
-  export class ResponseG2bApiBodyDTO {
-    @IsArray()
-    items: IBidData[];
-  }
-
-  export interface ResponseG2bApiDataDTO {
-    header: ResponseG2bApiHeaderDTO;
-
-    body: ResponseG2bApiBodyDTO;
-  }
-
-  export interface CreateBidDataDTO extends Omit<IBidData, 'id'> {}
-
-  export interface IBidID {
-    id: string;
+  hasName(): boolean {
+    return this.name != null;
   }
 }
