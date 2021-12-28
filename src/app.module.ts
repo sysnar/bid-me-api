@@ -10,6 +10,7 @@ import { ExceptionTransformFilter } from './common/filters/exception-transform.f
 import { GroupModule } from './api/application/user/group/group.module';
 import { KeywordModule } from './api/application/user/keyword/keyword.module';
 import { AuthModule } from './api/application/auth/auth.module';
+import { BookmarkModule } from './api/application/bid/bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthModule } from './api/application/auth/auth.module';
     GroupModule,
     KeywordModule,
     AuthModule,
+    BookmarkModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ExceptionTransformFilter }],
 })
