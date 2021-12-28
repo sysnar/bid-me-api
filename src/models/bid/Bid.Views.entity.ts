@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 import { BidData } from './Bid.Data.entity';
 
@@ -11,13 +11,12 @@ export class BidViews {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
-  // 입찰공고 조회 횟수
-  @Column()
-  public total: number;
-
   // 마지막으로 입찰공고가 조회된 시간
-  @Column()
-  public updated_dt: Date;
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    nullable: false,
+  })
+  public updatedDt: Date;
 
   // 조회된 입찰공고 ID
   @ManyToOne(() => BidData, (bid) => bid.views)

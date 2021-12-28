@@ -21,7 +21,7 @@ export class BidDataService {
     private bidDataRepository: BidDataRepository,
   ) {}
 
-  async findOneById(id: string): Promise<BidData> {
+  async findById(id: string): Promise<BidData> {
     return await this.bidDataRepository.findOne({ id });
   }
 

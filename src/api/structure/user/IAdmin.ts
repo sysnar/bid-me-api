@@ -3,7 +3,7 @@ import { OmitType } from '@nestjs/mapped-types';
 import { IBaseId } from '../IBase';
 
 export class IAdmin extends IBaseId {
-  user_id: string;
+  userId: string;
 
   createdDt: Date;
 

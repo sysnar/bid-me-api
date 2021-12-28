@@ -18,7 +18,7 @@ export class BookmarkService {
   async create(bookmarkCreateDTO: BookmarkCreateDTO): Promise<void> {
     const { userId, bidId } = bookmarkCreateDTO;
 
-    const bid = await this.bidDataService.findOneById(bidId);
+    const bid = await this.bidDataService.findById(bidId);
     const user = await this.userService.findById(userId);
 
     const bookmark = this.bookmarkRepository.create({ bid, user });
