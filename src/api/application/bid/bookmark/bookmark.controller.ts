@@ -1,9 +1,21 @@
-import { BookmarkCreateDTO } from '@app/api/structure/bid/IBookmark';
-import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
-import { Body, Controller, InternalServerErrorException, Logger, Post } from '@nestjs/common';
+import {
+  Body,
+  ConflictException,
+  Controller,
+  InternalServerErrorException,
+  Logger,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+
 import { BookmarkService } from './bookmark.service';
+import { BookmarkCreateDTO } from '@app/api/structure/bid/IBookmark';
+import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
+import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
+import { ResponseStatus } from '@app/common/libs/res-entity/ResponseStatus';
 
 @Controller('bookmark')
+@UseGuards(JwtAuthGuard)
 export class BookmarkController {
   constructor(
     private bookmarkService: BookmarkService, //
@@ -22,7 +34,14 @@ export class BookmarkController {
       await this.bookmarkService.create(bookmarkCreateDTO);
       return ResponseEntity.OK('북마크 생성되었습니다.');
     } catch (error) {
-      this.logger.error(`Bookmark - POST ${bookmarkCreateDTO}`, error);
+      this.logger.error(`Bookmark - POST ${JSON.stringify(bookmarkCreateDTO)}`, error);
+
+      if (error?.code === '23505') {
+        throw new ConflictException(
+          ResponseEntity.ERROR_WITH('이미 존재하는 북마크입니다.', ResponseStatus.CONFLICT),
+        );
+      }
+
       throw new InternalServerErrorException(
         ResponseEntity.ERROR_WITH('북마크 생성에 실패하였습니다.'),
       );
