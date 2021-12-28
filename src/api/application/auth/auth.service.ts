@@ -20,6 +20,12 @@ export class AuthService {
   async signUp(userCreateDTO: UserCreateDTO): Promise<void> {
     const { name, email, password } = userCreateDTO;
     const hashedPassword = await Cipher.ENCRYPT(password);
+    const isSigned = await this.userService.findByName(name);
+
+    // DB에 생성하려는 name(아이디)가 존재할 경우 에러를 반환
+    if (Object.keys(isSigned).length > 0) {
+      throw ErrorEntity.SERVICE_ERROR('23505', 409);
+    }
 
     await this.userService.create({ name, email, password: hashedPassword });
   }

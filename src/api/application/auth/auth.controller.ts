@@ -32,9 +32,13 @@ export class AuthController {
       this.logger.error(`Auth - SIGNUP ${JSON.stringify(userCreateDTO)}`, error);
 
       if (error.code === '23505') {
-        throw new ConflictException('Existing username');
+        throw new ConflictException(
+          ResponseEntity.ERROR_WITH('이미 존재하는 회원명입니다.', ResponseStatus.CONFLICT),
+        );
       } else {
-        throw new InternalServerErrorException();
+        throw new InternalServerErrorException(
+          ResponseEntity.ERROR_WITH('회원가입에 실패하였습니다.'),
+        );
       }
     }
   }
