@@ -7,13 +7,18 @@ import {
   InternalServerErrorException,
   Logger,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { AdminService } from './admin.service';
 import { IBaseId } from '@app/api/structure/IBase';
+import { Roles } from '@app/common/decorators/roles.decorator';
+import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
 
 @Controller('admin')
+@Roles('admin')
+@UseGuards(JwtAuthGuard)
 export class AdminController {
   // prettier-ignore
   constructor(

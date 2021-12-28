@@ -9,14 +9,19 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 
 import { GroupCreateDTO, GroupUpdateDTO } from '@app/api/structure/user/IGroup';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { GroupService } from './group.service';
 import { Group } from '@app/models/user/Group.entity';
+import { Roles } from '@app/common/decorators/roles.decorator';
+import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
 
 @Controller('group')
+@Roles('admin')
+@UseGuards(JwtAuthGuard)
 export class GroupController {
   constructor(private groupService: GroupService, private logger: Logger) {}
 

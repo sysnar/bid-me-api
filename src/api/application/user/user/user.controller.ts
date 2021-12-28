@@ -6,16 +6,18 @@ import {
   Get,
   InternalServerErrorException,
   Logger,
-  Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 
-import { UserCreateDTO, UserUpdateDTO } from '@app/api/structure/user/IUser';
+import { UserUpdateDTO } from '@app/api/structure/user/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
+import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
 import { User } from '@app/models/user/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(
     private userService: UserService, //
@@ -31,20 +33,6 @@ export class UserController {
       this.logger.log(`User GET - Get User ${JSON.stringify(id)}`, error);
       throw new InternalServerErrorException(
         ResponseEntity.ERROR_WITH('해당하는 회원정보가 존재하지 않습니다.'),
-      );
-    }
-  }
-
-  // Need to be Removed or refactor for admin function
-  @Post('signup')
-  async createUser(@Body() user: UserCreateDTO): Promise<ResponseEntity<string>> {
-    try {
-      await this.userService.create(user);
-      return ResponseEntity.OK();
-    } catch (error) {
-      this.logger.error(`User POST ${JSON.stringify(user)}`, error);
-      throw new InternalServerErrorException(
-        ResponseEntity.ERROR_WITH('회원가입에 실패하였습니다.'),
       );
     }
   }

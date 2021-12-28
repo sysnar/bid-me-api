@@ -8,14 +8,17 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 
 import { IBaseId } from '@app/api/structure/IBase';
 import { IKeyword, KeywordCreateDTO } from '@app/api/structure/user/IKeyword';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { KeywordService } from './keyword.service';
+import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
 
 @Controller('keyword')
+@UseGuards(JwtAuthGuard)
 export class KeywordController {
   // prettier-ignore
   constructor(
