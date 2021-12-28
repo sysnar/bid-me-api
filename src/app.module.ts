@@ -11,6 +11,7 @@ import { GroupModule } from './api/application/user/group/group.module';
 import { KeywordModule } from './api/application/user/keyword/keyword.module';
 import { AuthModule } from './api/application/auth/auth.module';
 import { BookmarkModule } from './api/application/bid/bookmark/bookmark.module';
+import { ViewsModule } from './api/application/bid/views/views.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { BookmarkModule } from './api/application/bid/bookmark/bookmark.module';
     KeywordModule,
     AuthModule,
     BookmarkModule,
+    ViewsModule,
   ],
   providers: [{ provide: APP_FILTER, useClass: ExceptionTransformFilter }],
 })
