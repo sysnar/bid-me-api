@@ -16,6 +16,19 @@ import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 export class BidDataController {
   constructor(private bidDataService: BidDataService, private logger: Logger) {}
 
+  @Get('/random')
+  async getBidDataRandom() {
+    try {
+      const searchData = await this.bidDataService.findRandom();
+      return ResponseEntity.OK_WITH(searchData, `무작위 추천 입찰공고 정보입니다.`);
+    } catch (error) {
+      this.logger.error(`Bid GET - bid data random Error `, error);
+      throw new InternalServerErrorException(
+        ResponseEntity.ERROR_WITH('입찰공고 정보 검색에 실패하였습니다.'),
+      );
+    }
+  }
+
   @Get('/:keyword')
   async getBidDataByKeyword(@Param('keyword') keyword: string) {
     return await this.bidDataService.findOneByKeyword(keyword);

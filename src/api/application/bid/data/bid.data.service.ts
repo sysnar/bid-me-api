@@ -30,6 +30,10 @@ export class BidDataService {
     return await this.bidDataRepository.find({ where: { bidNtceNm: Like(`%${keyword}%`) } });
   }
 
+  async findRandom() {
+    return await this.bidDataRepository.random();
+  }
+
   async searchByKeyword(param: BidDataSearchDTO) {
     const result = await this.bidDataRepository.paging(param);
     return new Page<BidData>(result[1], param.pageSize, result[0]);
