@@ -15,7 +15,7 @@ import { UserCreateDTO } from '@app/api/structure/user/IUser';
 import { ResponseEntity } from '@app/common/libs/res-entity/ResponseEntity';
 import { ResponseStatus } from '@app/common/libs/res-entity/ResponseStatus';
 import { JwtAuthGuard } from '@app/common/guards/jwt-auth.guard';
-import { Token } from '@app/common/decorators/token.decorator';
+import { GetUser } from '@app/common/decorators/token.decorator';
 import { User } from '@app/models/user/user.entity';
 import { Roles } from '@app/common/decorators/roles.decorator';
 
@@ -71,7 +71,7 @@ export class AuthController {
   @Post('/logout')
   @Roles('admin')
   @UseGuards(JwtAuthGuard)
-  async logOut(@Token() user: User) {
+  async logOut(@GetUser() user: User) {
     try {
       // Need to be Refecotored with logout logic
       // Make a black list with Redis

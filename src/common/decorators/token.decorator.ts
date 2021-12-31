@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
-export const Token = createParamDecorator((data, ctx: ExecutionContext): ParameterDecorator => {
+export const GetUser = createParamDecorator((data, ctx: ExecutionContext): ParameterDecorator => {
   // 클라이언트에서 보낸 request 정보 추출
   const request = ctx.switchToHttp().getRequest();
 

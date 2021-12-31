@@ -23,7 +23,7 @@ export class AuthService {
     const isSigned = await this.userService.findByName(name);
 
     // DB에 생성하려는 name(아이디)가 존재할 경우 에러를 반환
-    if (Object.keys(isSigned).length > 0) {
+    if (isSigned) {
       throw ErrorEntity.SERVICE_ERROR('23505', 409);
     }
 
@@ -31,18 +31,18 @@ export class AuthService {
   }
 
   async signIn(authCredentialsDto: AuthCredentialDTO): Promise<{ accessToken: string }> {
-    const { name } = authCredentialsDto;
+    const { name, password } = authCredentialsDto;
     const user = await this.userService.findByName(name);
     const admin = await this.adminService.findOneByUserId(user.id);
 
-    if (admin) {
+    if (admin && Cipher.COMPARE(password, user.password)) {
       const adminId = admin.id;
       // Create Admin Token (Secret + Payload)
       const payload = { id: user.id, role: 'ADMIN', roleId: adminId }; // Must not contain important informations
       const accessToken = this.jwtService.sign(payload);
 
       return { accessToken };
-    } else if (user) {
+    } else if (user && Cipher.COMPARE(password, user.password)) {
       const userId = user.id;
       // Create User Token (Secret + Payload)
       const payload = { id: userId }; // Must not contain important informations
