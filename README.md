@@ -2,6 +2,7 @@
 
 ## 프로젝트 요약
 - 입찰공고 검색 서비스 개발
+- [포트폴리오 문서 확인하기](https://drive.google.com/file/d/1DV0634ehPOkT-SR_uS5nHBn7QGfYslTv/view?usp=sharing) 
 
 ## 팀구성
 
