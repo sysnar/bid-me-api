@@ -1,8 +1,8 @@
 # 입찰공고 검색 지원 시스템 BiD-ME!
 
 ## 프로젝트 요약
-- 입찰공고 검색 서비스 개발
-- [포트폴리오 문서 확인하기](https://drive.google.com/file/d/1DV0634ehPOkT-SR_uS5nHBn7QGfYslTv/view?usp=sharing) 
+- 기존의 반복적이고 복잡한 입찰공고 검색을 간편화한 검색 서비스 개발
+- 직관적이고 간편하게 개발하여 불필요한 시간 소비를 절약하는 서비스를 배포
 
 ## 팀구성
 
@@ -25,6 +25,7 @@
   - DevOps : AWS EC2, S3, Route53, Cloudwatch, SES, Loadbalancer
 
 ## 프로젝트 문서(추진배경, 요구사항 정의서 등)
+- [포트폴리오 문서 확인하기](https://drive.google.com/file/d/1DV0634ehPOkT-SR_uS5nHBn7QGfYslTv/view?usp=sharing)
   
 ## API 기능명세서
 https://github.com/sysnar/bid-me-api/wiki
